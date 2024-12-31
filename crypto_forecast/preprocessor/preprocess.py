@@ -1,4 +1,4 @@
-def validate_no_missing_values(data):
+def validate_missing_values(data):
     """
     데이터 유효성 검사.
 

@@ -20,7 +20,7 @@ class CfgLoader:
     tic = '2024-11-01T00:00:00'
     toc = '2024-12-31T23:59:00'
     max_per_attmp = 180 # 한번에 가져 올 데이터 개수 (최대 200)
-    quotation = {
+    quotation = { # bronze_layer로 변수 명 변경
         'CANDLE' : {
             'params': {},
             'scheme': 'dw_brz',
@@ -60,7 +60,9 @@ class CfgLoader:
 class CfgPreprocessor:
     platform = 'upbit'
     unit = 'minutes' # minutes, days, weeks, months
-    seq_len = 120
+    seq_len = 120 # 2시간
+    split_ratio = 0.7
+    split_point = '2024-12-15T23:59:59'
     transform = {
         'SCALER': {
             'name': 'sklearn.preprocessing.MinMaxScaler',
