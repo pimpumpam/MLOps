@@ -1,0 +1,20 @@
+[2024-12-30 02:59:49,923][core.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.                Execute Run on the "crypto_forecast".
+[2024-12-30 03:00:44,221][core.load][INFO] >>> ETL Crypto Transaction Data from API
+[2024-12-30 03:00:44,221][core.load][INFO] >>> Inquire "UPBIT CANDLE" Data
+[2024-12-30 03:00:48,558][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_candle_upbit_minutes"
+[2024-12-30 03:00:48,559][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_candle_upbit_minutes"
+[2024-12-30 03:00:48,576][core.load][INFO] >>> Inquire "UPBIT TRADE" Data
+[2024-12-30 03:03:54,771][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
+[2024-12-30 03:03:54,771][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
+[2024-12-30 03:16:08,445][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.            Execute Run on the "crypto_forecast".
+[2024-12-30 03:16:38,809][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.            Execute Run on the "crypto_forecast".
+[2024-12-30 03:16:56,122][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.            Execute Run on the "crypto_forecast".
+[2024-12-30 03:24:13,847][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.            Execute Run on the "crypto_forecast".
+[2024-12-30 03:27:58,604][trainer.train][INFO] >>> 🧪 Experiment crypto_forecast is not Exist.            Create Experiment.
+[2024-12-31 01:33:10,028][core.load][INFO] >>> ETL Crypto Transaction Data from API
+[2024-12-31 01:33:10,029][core.load][INFO] >>> Inquire "UPBIT CANDLE" Data
+[2024-12-31 01:35:21,204][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_candle_upbit_minutes"
+[2024-12-31 01:35:21,208][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_candle_upbit_minutes"
+[2024-12-31 01:35:21,419][core.load][INFO] >>> Inquire "UPBIT TRADE" Data
+[2024-12-31 01:35:21,429][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
+[2024-12-31 01:35:21,430][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
