@@ -3,9 +3,10 @@ import argparse
 
 import mlflow
 
-from trainer.train import setup_experiment
+from trainer.train import setup_experiment, train
+
 from utils.logger import setup_logger
-from utils.utils import load_spec_from_config
+from utils.utils import load_spec_from_config, hyperparameter_combination
 
 
 LOGGER = setup_logger(__name__, 'train_workflow.log')
@@ -16,7 +17,10 @@ class Trainer:
         self.cfg_model = cfg_model
         self.cfg_hyp = cfg_hyp
 
-    def run(self, **kwargs):
+    def run(self, dataset):
+        # 학습 & 검증 데이터 DB에서 불러오기
+        
+        
         mlflow.set_tracking_uri(self.cfg_meta.mlflow['DASHBOARD_URL'])
 
         # set experiment
@@ -25,12 +29,28 @@ class Trainer:
             artifact_location=self.cfg_meta.mlflow['ARTIFACT_DIR']
         )
 
+
+        # set hyperparameter
+        hyp_list = hyperparameter_combination(self.cfg_hyp)
+        
         # set run
         with mlflow.start_run(run_name=self.cfg_model.name) as run:
             
             # train code
-            print("학습 코드 개발 진행 중")
-
+            if len(hyp_list)>1:
+                LOGGER.info("Hyperparmaeter optimization process need to be developed")
+                
+            else:
+                hyp = hyp_list.pop()
+                
+                train(
+                    dataset=dataset,
+                    model='개발필요',
+                    batch_size=hyp_list['batch_size'],
+                    num_epochs=hyp_list['num_epochs'],
+                    learning_rate=hyp_list['learning_rate'],
+                    device='cpu'
+                )
 
 
 if __name__ == "__main__":
@@ -41,13 +61,14 @@ if __name__ == "__main__":
 
     # configs
     (
-        cfg_meta, 
-        _, # cfg_loader 
+        cfg_meta,
+        _, # cfg_database
+        _, # cfg_loader
         _, # cfg_preprocessor
         cfg_model,
-        cfg_hyp, 
-        _  # cfg_evaluate
-    ) = load_spec_from_config(args.config)
+        cfg_hyp,
+        _, # cfg_evaluate
+    ) = load_spec_from_config('dlinear')
 
     # train
     learner = Trainer(cfg_meta, cfg_model, cfg_hyp)

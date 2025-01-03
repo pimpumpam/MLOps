@@ -1,30 +1,20 @@
 class CfgMeta:
     name = 'CRYPTO_FORECAST'
     exp_name = 'crypto_forecast'
-    database = {
-        'ENGINE': 'Sqlite3',
-        'DATABASE_DIR' : '/Users/pimpumpam/Desktop/myScript/MLOps_Prj/mlOps_prj/crypto_forecast/crypto.db',
-    }
     mlflow = {
         'DASHBOARD_URL': 'http://127.0.0.1:8331',
-        'DATABASE_DIR': '/Users/pimpumpam/Desktop/myScript/MLOps_Prj/mlOps_prj/mlflow.db',
-        'ARTIFACT_DIR': '/Users/pimpumpam/Desktop/myScript/MLOps_Prj/mlOps_prj/artifacts'
+        'DATABASE_DIR': '/Users/pimpumpam/my_Python/MLOps_Prj/mlflow.db',
+        'ARTIFACT_DIR': '/Users/pimpumpam/my_Python/MLOps_Prj/artifacts'
     }
-
-
-class CfgLoader:
-    platform = 'upbit'
-    market = ['KRW-BTC', 'BTC-ETH', 'BTC-XRP'] # 비트코인, 이더리움, 리플
-    unit = 'minutes' # minutes, days, weeks, months
-    time_unit = 1 # 분 봉의 단위
-    tic = '2024-11-01T00:00:00'
-    toc = '2024-12-31T23:59:00'
-    max_per_attmp = 180 # 한번에 가져 올 데이터 개수 (최대 200)
-    quotation = { # bronze_layer로 변수 명 변경
+    
+class CfgDatabase:
+    engine = 'Sqlite3'
+    database_dir = '/Users/pimpumpam/my_Python/MLOps_Prj/crypto_forecast/crypto.db'
+    bronze = {
         'CANDLE' : {
             'params': {},
             'scheme': 'dw_brz',
-            'table' : f'crypto_transc_candle_{platform}_{unit}',
+            'table' : 'crypto_transc_candle_upbit_minutes',
             'columns': [
                 {'source': 'market', 'name': 'MARKET', 'type': 'STRING'},
                 {'source': 'candle_date_time_utc', 'name': 'UTC_TIME', 'type': 'STRING'},
@@ -40,7 +30,7 @@ class CfgLoader:
         'TRADE' : {
             'params' : {'cursor' : None, 'days_ago' : 1},
             'scheme': 'dw_brz',
-            'table' : f'crypto_transc_recent_trade_{platform}',
+            'table' : 'crypto_transc_recent_trade_upbit',
             'columns' : [
                 {'source': 'market', 'name': 'MARKET', 'type': 'STRING'},
                 {'source': 'trade_date_utc', 'name': 'UTC_DATE', 'type': 'STRING'},
@@ -55,6 +45,101 @@ class CfgLoader:
             ]
         }
     }
+    silver = {
+        'CANDLE_1MIN': {
+            'scheme': 'dw_slv',
+            'table': 'crypto_transc_candle_upbit_1min',
+            'columns': [
+                {'name': 'MARKET', 'type': 'STRING'},
+                {'name': 'KST_TIME', 'type': 'STRING'},
+                {'name': 'OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'ACC_TRADE_VOLUME', 'type': 'REAL'},
+                {'name': 'DIFF_OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'DIFF_ACC_TRADE_VOLUME', 'type': 'REAL'},
+                {'name': 'RATIO_OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'RATIO_ACC_TRADE_VOLUME', 'type': 'REAL'}
+            ]
+        },
+        
+        'CANDLE_5MIN': {
+            'scheme': 'dw_slv',
+            'table': 'crypto_transc_candle_upbit_5min',
+            'columns': [
+                {'name': 'MARKET', 'type': 'STRING'},
+                {'name': 'KST_TIME', 'type': 'STRING'},
+                {'name': 'OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'ACC_TRADE_VOLUME', 'type': 'REAL'},
+                {'name': 'DIFF_OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'DIFF_ACC_TRADE_VOLUME', 'type': 'REAL'},
+                {'name': 'RATIO_OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'RATIO_ACC_TRADE_VOLUME', 'type': 'REAL'}
+            ]
+        },
+        
+        'CANDLE_10MIN': {
+            'scheme': 'dw_slv',
+            'table': 'crypto_transc_candle_upbit_10min',
+            'columns': [
+                {'name': 'MARKET', 'type': 'STRING'},
+                {'name': 'KST_TIME', 'type': 'STRING'},
+                {'name': 'OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'ACC_TRADE_VOLUME', 'type': 'REAL'},
+                {'name': 'DIFF_OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'DIFF_ACC_TRADE_VOLUME', 'type': 'REAL'},
+                {'name': 'RATIO_OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'RATIO_ACC_TRADE_VOLUME', 'type': 'REAL'}
+            ]
+        }
+    }
+    gold = {
+        
+    }
+
+
+class CfgLoader:
+    platform = 'upbit'
+    market = ['KRW-BTC', 'BTC-ETH', 'BTC-XRP'] # 비트코인, 이더리움, 리플
+    unit = 'minutes' # minutes, days, weeks, months
+    time_unit = 1 # 분 봉의 단위
+    tic = '2024-11-01T00:00:00'
+    toc = '2024-12-31T23:59:00'
+    max_per_attmp = 180 # 한번에 가져 올 데이터 개수 (최대 200)
 
 
 class CfgPreprocessor:
@@ -62,18 +147,29 @@ class CfgPreprocessor:
     unit = 'minutes' # minutes, days, weeks, months
     seq_len = 120 # 2시간
     split_ratio = 0.7
-    split_point = '2024-12-15T23:59:59'
+    split_point = '2024-12-25T23:59:59'
     transform = {
         'SCALER': {
             'name': 'sklearn.preprocessing.MinMaxScaler',
-            'save_dir' : '/Users/pimpumpam/Desktop/myScript/MLOps_Prj/mlOps_prj/crypto_forecast/static'
+            'save_dir' : '/Users/pimpumpam/my_Python/MLOps_Prj/crypto_forecast/static'
         },
-        'ENCODING': {
+        'ENCODER': {
             'name': 'sklearn.preprocessing.LabelEncoder',
-            'save_dir' : '/Users/pimpumpam/Desktop/myScript/MLOps_Prj/mlOps_prj/crypto_forecast/static'
+            'save_dir' : '/Users/pimpumpam/my_Python/MLOps_Prj/crypto_forecast/static'
         }
     }    
-    
+    feature_cols = {
+        'bronze': [
+            'LOW_PRICE', 'HIGH_PRICE', 'OPEN_PRICE', 'CLOSE_PRICE',
+            'ACC_TRADE_PRICE', 'ACC_TRADE_VOLUME'
+        ],
+        'silver': [
+            'LOW_PRICE', 'HIGH_PRICE', 'OPEN_PRICE', 'CLOSE_PRICE',
+            'ACC_TRADE_PRICE', 'ACC_TRADE_VOLUME',
+            'DIFF_LOW_PRICE', 'DIFF_HIGH_PRICE', 'DIFF_OPEN_PRICE', 'DIFF_CLOSE_PRICE', 'DIFF_ACC_TRADE_PRICE', 'DIFF_ACC_TRADE_VOLUME',
+            'RATIO_LOW_PRICE', 'RATIO_HIGH_PRICE', 'RATIO_OPEN_PRICE', 'RATIO_CLOSE_PRICE', 'RATIO_ACC_TRADE_PRICE', 'RATIO_ACC_TRADE_VOLUME'
+        ]
+    }
 
 class CfgModel:
     platform = 'upbit'
@@ -83,12 +179,12 @@ class CfgModel:
 
 
 class CfgHyperParameter:
-    num_epoch = 300
+    num_epoch = 2
     learning_rate = 0.005
+    batch_size = 300
     
 
 class CfgEvaluate:
     platform = 'upbit'
     unit = 'minutes' # minutes, days, weeks, months
     table = f'crypto_transaction_{platform}_{unit}'
-   

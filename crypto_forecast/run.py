@@ -3,12 +3,14 @@ import argparse
 
 from core.load import Loader
 from core.train import Trainer
+from core.preprocess import Preprocessor
 from utils.utils import load_spec_from_config
 
 class Run:
     def __init__(self, config_name):
         (
             self.cfg_meta,
+            self.cfg_database,
             self.cfg_loader,
             self.cfg_preprocessor,
             self.cfg_model,
@@ -17,15 +19,28 @@ class Run:
         ) = load_spec_from_config(config_name)
 
     def load(self):
-        loader = Loader(self.cfg_meta, self.cfg_loader)
+        loader = Loader(
+            self.cfg_meta,
+            self.cfg_database,
+            self.cfg_loader
+        )
         loader.run()
 
-    # def preprocess(self):
-    #     preprocessor = Preprocessor()
-    #     preprocessor.run()
+    def preprocess(self):
+        preprocessor = Preprocessor(
+            self.cfg_meta, 
+            self.cfg_database, 
+            self.cfg_loader, 
+            self.cfg_preprocessor
+        )
+        preprocessor.run()
 
     def train(self):
-        trainer = Trainer(self.cfg_meta, self.cfg_model, self.cfg_hyp)
+        trainer = Trainer(
+            self.cfg_meta,
+            self.cfg_model,
+            self.cfg_hyp
+        )
         trainer.run()
 
     # def evaluate(self):
@@ -41,13 +56,13 @@ if __name__ == "__main__":
     runner = Run(args.config)   
 
     # loading
-    runner.load()
+    # runner.load()
 
     # preprocessing
-    # runner.preprocess() 
+    runner.preprocess() 
 
     # training
-    # runner.train() 
+    runner.train() 
     
     # evaluating
     # runner.evaluate()  

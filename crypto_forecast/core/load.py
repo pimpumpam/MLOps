@@ -4,7 +4,7 @@ import datetime
 
 from loader.load import inquire_candle_data, inquire_recent_trade_data
 
-from utils.query import BronzeLayerQuery
+from utils.query import Query
 from utils.database import SQLiteDBManager
 from utils.logger import setup_logger
 from utils.utils import create_seq_values, load_spec_from_config
@@ -13,15 +13,16 @@ from utils.utils import create_seq_values, load_spec_from_config
 LOGGER = setup_logger(__name__, 'train_workflow.log')
 
 class Loader:
-    def __init__(self, cfg_meta, cfg_loader):
+    def __init__(self, cfg_meta, cfg_database, cfg_loader):
         self.cfg_meta = cfg_meta
+        self.cfg_database = cfg_database
         self.cfg_loader = cfg_loader
-        self.db_manager = SQLiteDBManager(cfg_meta.database['DATABASE_DIR'])
+        self.db_manager = SQLiteDBManager(cfg_database.database_dir)
 
     def run(self):
         LOGGER.info("ETL Crypto Transaction Data from API")    
 
-        for api, prop in self.cfg_loader.quotation.items():
+        for api, prop in self.cfg_database.bronze.items():
             LOGGER.info(f"Inquire \"{self.cfg_loader.platform.upper()} {api}\" Data")
 
             # inquire data    
@@ -41,7 +42,7 @@ class Loader:
                             unit = self.cfg_loader.unit,
                             time_unit=self.cfg_loader.time_unit,
                             max_per_attmp=self.cfg_loader.max_per_attmp,
-                            params=self.cfg_loader.quotation['CANDLE']['params']
+                            params=self.cfg_database.bronze['CANDLE']['params']
                         )
                         data.extend(datum)
 
@@ -59,7 +60,7 @@ class Loader:
                 #             market=market,
                 #             tgt_date=toc,
                 #             max_per_attmp=self.cfg_loader.max_per_attmp,
-                #             params = self.cfg_loader.quotation['TRADE']['params']
+                #             params = self.cfg_database.bronze['TRADE']['params']
                 #         )
                 #         if len(datum)==0:
                 #             break
@@ -78,13 +79,13 @@ class Loader:
                 #         time.sleep(0.1)
 
             # create table
-            LOGGER.info(f"Create Table as \"{self.cfg_loader.quotation[api]['scheme']}_{self.cfg_loader.quotation[api]['table']}\"")
-            query = BronzeLayerQuery.create_table(prop)
+            LOGGER.info(f"Create Table as \"{self.cfg_database.bronze[api]['scheme']}_{self.cfg_database.bronze[api]['table']}\"")
+            query = Query.create_table(prop)
             self.db_manager.execute_query(query=query)
 
             # insert data
-            LOGGER.info(f"Insert Data into \"{self.cfg_loader.quotation[api]['scheme']}_{self.cfg_loader.quotation[api]['table']}\"")
-            query = BronzeLayerQuery.insert_data_to_table(prop)
+            LOGGER.info(f"Insert Data into \"{self.cfg_database.bronze[api]['scheme']}_{self.cfg_database.bronze[api]['table']}\"")
+            query = Query.insert_data_to_table(prop)
             param_seq = create_seq_values(prop, data)
             self.db_manager.execute_many_query(query, param_seq)
 
@@ -92,7 +93,8 @@ class Loader:
 if __name__ == "__main__":
     
     (
-        cfg_meta, 
+        cfg_meta,
+        cfg_database,
         cfg_loader, 
         _, # cfg_preprocessor
         _, # cfg_model
@@ -100,5 +102,5 @@ if __name__ == "__main__":
         _, # cfg_evaluate
     ) = load_spec_from_config('dlinear')
 
-    loader = Loader(cfg_meta, cfg_loader)
+    loader = Loader(cfg_meta, cfg_database, cfg_loader)
     loader.run()

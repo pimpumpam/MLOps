@@ -1,6 +1,10 @@
 import pandas as pd
 from numpy.lib.stride_tricks import sliding_window_view
 
+import torch
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms, utils
+
 from utils.logger import setup_logger
 
 LOGGER = setup_logger(__name__, 'train_workflow.log')
@@ -38,14 +42,22 @@ def split_train_test(data, train_ratio, test_ratio=None, **kwargs):
             LOGGER.error(f"Sum of argument \'train_ratio\' and \'test_ratio\' must be 1")
         elif train_ratio+test_ratio == 1:
             train_ratio = train_ratio
+    else:
+        if 'split_point' not in kwargs:
+            LOGGER.error(f"One of split ratio or split time must be needed")
 
+    # remove duplicated and NaN row
+    data = data.drop_duplicates()
+    data = data.dropna()
+    
     # sort by time column
     if 'time_col' in kwargs:
         if not pd.api.types.is_datetime64_any_dtype(data[kwargs['time_col']]):
             data[kwargs['time_col']] = pd.to_datetime(data[kwargs['time_col']])
 
         data = data.sort_values(by=kwargs['time_col']).reset_index(drop=True)
-
+    
+    # split by time
     if 'split_point' in kwargs:
         if 'time_col' not in kwargs:
             LOGGER.error(f"To split the data based on time, you must assign the name of the time-related column to the \'time_col\' argument.")
@@ -53,16 +65,17 @@ def split_train_test(data, train_ratio, test_ratio=None, **kwargs):
         elif isinstance(kwargs['split_point'], str):
             split_point = pd.to_datetime(kwargs['split_point'])
 
-        train_data = data[data[kwargs['time_col']] <= split_point]
-        test_data = data[data[kwargs['time_col']] > split_point]
+        train_data = data[data[kwargs['time_col']] <= split_point].reset_index(drop=True)
+        test_data = data[data[kwargs['time_col']] > split_point].reset_index(drop=True)
 
         return train_data, test_data
-        
+    
+    # split by ratio
     else:
         split_point = int(len(data) * train_ratio)
 
-        train_data = data.iloc[:split_point]
-        test_data = data.iloc[split_point:]
+        train_data = data.iloc[:split_point].reset_index(drop=True)
+        test_data = data.iloc[split_point:].reset_index(drop=True)
 
         return train_data, test_data
 
@@ -91,6 +104,10 @@ def split_sliding_window(data, feature_col, input_seq_len, label_seq_len=1, **kw
     # dtype check
     if not isinstance(feature_col, list):
         feature_col = [feature_col]
+        
+    # remove duplicated and NaN row
+    data = data.drop_duplicates()
+    data = data.dropna()
 
     # sort by time column
     if 'time_col' in kwargs:
@@ -101,15 +118,54 @@ def split_sliding_window(data, feature_col, input_seq_len, label_seq_len=1, **kw
 
     # data sampling
     data_arr = data[feature_col].values
-
+    
     # set sequence length
     seq_len = input_seq_len + label_seq_len
 
     # apply sliding window
-    window_data = sliding_window_view(data_arr, seq_len)
+    window_data = sliding_window_view(data_arr, (seq_len,), axis=0).transpose(0, 2, 1)
 
     # set inputs and labels
-    X = window_data[:, :input_seq_len]
-    y = window_data[:, input_seq_len:]
+    X = window_data[:, :input_seq_len, :]
+    y = window_data[:, input_seq_len:, :]
 
-    return X, y
+    return X.squeeze(), y.squeeze()
+
+
+class TimeseriesDataset(Dataset):
+    
+    def __init__(self, feat, label, transform=None):
+        """
+        Initializer
+        
+        parameter
+        ----------
+        feat(numpy.ndarray): 입력 feature 값
+        label(numpy.ndarray): label 값
+        transform()
+        
+        """
+        self.feat = feat
+        self.label = label
+        self.transform = transform
+        
+    def __len__(self):
+        return len(self.x)
+    
+    def __get_item__(self):
+        sample = {'feature': self.feat, 'label': self.label}
+        
+        if self.transform:
+            sample = self.transform(sample)
+            
+        return sample
+    
+    
+class ToTensor(object):
+    def __call__(self, sample):
+        feat, label = sample['feature'], sample['label']
+        
+        return {
+            'feature': torch.from_numpy(feat),
+            'label': torch.from_numpy(label)
+        }

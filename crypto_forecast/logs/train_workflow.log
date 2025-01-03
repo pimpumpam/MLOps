@@ -18,3 +18,12 @@
 [2024-12-31 01:35:21,419][core.load][INFO] >>> Inquire "UPBIT TRADE" Data
 [2024-12-31 01:35:21,429][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
 [2024-12-31 01:35:21,430][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-03 20:19:42,218][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-03 20:19:42,270][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-03 20:19:42,328][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-03 20:19:42,328][core.preprocess][INFO] >>> Create derieved features
+[2025-01-03 20:19:42,481][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-03 20:19:42,578][preprocessor.transformation][INFO] >>> Complete fitting & transformation using MinMaxScaler
+[2025-01-03 20:19:42,580][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-03 20:19:42,580][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-03 20:19:42,846][core.preprocess][INFO] >>> Apply sliding window to timeseries data
