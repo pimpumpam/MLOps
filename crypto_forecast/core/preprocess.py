@@ -1,7 +1,7 @@
 import os
 
-from preprocessor.transformation import MultiColumnScaler, MultiColumnLabelEncoder
-from preprocessor.data_preparation import split_train_test, split_sliding_window
+from preprocessor.transformation import MultiColumnScaler
+from preprocessor.data_preparation import split_train_test
 from preprocessor.feature_engineering import aggregate_by_time, amount_of_change_price, amount_of_change_rate
 from preprocessor.preprocess import validate_missing_timestamp, validate_missing_values, validate_duplicate_values, fill_time_gaps, fill_missing_values
 
@@ -43,7 +43,7 @@ class Preprocessor:
         )
         
         # ***************************** SILVER *****************************
-        # check missing timestamp
+        
         if not validate_missing_timestamp(candle_data, time_col='KST_TIME'):
             LOGGER.info("Data have at least one missing timestamp or more. Fill missing timestamp")
             candle_data = fill_time_gaps(
@@ -92,16 +92,6 @@ class Preprocessor:
         #     group_cols=['MARKET']
         # )
         
-        # candle_data_10min = aggregate_by_time(
-        #     data=candle_data,
-        #     time_col='KST_TIME',
-        #     feature_cols=self.cfg_preprocessor.feature_cols['bronze'],
-        #     unit='minute',
-        #     time_freq=10,
-        #     group_cols=['MARKET']
-        # )
-        
-        
         # create derieved feature
         LOGGER.info("Create derieved features")
         candle_data = amount_of_change_price(
@@ -114,14 +104,6 @@ class Preprocessor:
         
         # candle_data_5min = amount_of_change_price(
         #     candle_data_5min,
-        #     time_col='KST_TIME',
-        #     feature_cols=self.cfg_preprocessor.feature_cols['bronze'],
-        #     unit='day',
-        #     time_freq=1
-        # )
-        
-        # candle_data_10min = amount_of_change_price(
-        #     candle_data_10min,
         #     time_col='KST_TIME',
         #     feature_cols=self.cfg_preprocessor.feature_cols['bronze'],
         #     unit='day',
@@ -144,21 +126,13 @@ class Preprocessor:
         #     time_freq=1
         # )
         
-        # candle_data_10min = amount_of_change_rate(
-        #     candle_data_10min,
-        #     time_col='KST_TIME',
-        #     feature_cols=self.cfg_preprocessor.feature_cols['bronze'],
-        #     unit='day',
-        #     time_freq=1
-        # )
-        
         # load dataframe to table
-        # LOGGER.info("Load preprocessed result to database.")
-        # Query.dataframe_to_table(
-        #     self.cfg_database.silver['CANDLE_1MIN'],
-        #     candle_data,
-        #     conn=self.db_manager.conn
-        # )
+        LOGGER.info("Load preprocessed result to database.")
+        Query.dataframe_to_table(
+            self.cfg_database.silver['CANDLE_1MIN'],
+            candle_data,
+            conn=self.db_manager.conn
+        )
         
         # Query.dataframe_to_table(
         #     self.cfg_database.silver['CANDLE_5MIN'],
@@ -166,14 +140,8 @@ class Preprocessor:
         #     conn=self.db_manager.conn
         # )
         
-        # Query.dataframe_to_table(
-        #     table_info=self.cfg_database.silver['CANDLE_10MIN'],
-        #     data=candle_data_10min,
-        #     conn=self.db_manager.conn
-        # )
-        
         # ****************************** GOLD ******************************
-        # scaling
+        
         LOGGER.info("Apply scaler to data")
         scaler = MultiColumnScaler(self.cfg_preprocessor.transform['SCALER']['name'])
         scaler.fit_transform(
@@ -195,16 +163,6 @@ class Preprocessor:
         #     save_name='candle_5min_scaler'
         # )
         
-        # scaler_10min = MultiColumnScaler(self.cfg_preprocessor.transform['SCALER']['name'])
-        # scaler_10min.fit_transform(
-        #     data=candle_data_10min,
-        #     columns=self.cfg_preprocessor.feature_cols['silver'],
-        #     inplace=True,
-        #     save_pkl=True,
-        #     save_path=self.cfg_preprocessor.transform['SCALER']['save_dir'],
-        #     save_name='candle_10min_scaler'
-        # )
-        
         LOGGER.info("Split data as train and test sets")
         train_1min, test_1min = split_train_test(
             data=candle_data,
@@ -222,23 +180,23 @@ class Preprocessor:
         #     split_point=self.cfg_preprocessor.split_point
         # )
         
-        # train_10min, test_10min = split_train_test(
-        #     data=candle_data_10min,
-        #     train_ratio=None,
-        #     test_ratio=None,
-        #     time_col = 'KST_TIME',
-        #     split_point=self.cfg_preprocessor.split_point
-        # )
         
-        LOGGER.info("Apply sliding window to timeseries data")
-        X_1min, y_1min = split_sliding_window(
-            data=train_1min,
-            feature_col=self.cfg_preprocessor.feature_cols['silver'],
-            input_seq_len=self.cfg_preprocessor.seq_len,
-            label_seq_len=1,
-            time_col = 'KST_TIME'
+        LOGGER.info("Load scaled dataset to database.")
+        Query.dataframe_to_table(
+            table_info = self.cfg_database.gold['CANDLE_1MIN'],
+            data = train_1min,
+            conn = self.db_manager.conn,
+            table_name_suffix = 'train',
+            table_exists_handling = 'replace'
         )
-
+        
+        Query.dataframe_to_table(
+            table_info = self.cfg_database.gold['CANDLE_1MIN'],
+            data = test_1min,
+            conn = self.db_manager.conn,
+            table_name_suffix = 'test',
+            table_exists_handling = 'replace'
+        )
         
 if __name__ == "__main__":
     

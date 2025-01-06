@@ -3,13 +3,13 @@ class CfgMeta:
     exp_name = 'crypto_forecast'
     mlflow = {
         'DASHBOARD_URL': 'http://127.0.0.1:8331',
-        'DATABASE_DIR': '/Users/pimpumpam/my_Python/MLOps_Prj/mlflow.db',
-        'ARTIFACT_DIR': '/Users/pimpumpam/my_Python/MLOps_Prj/artifacts'
+        'DATABASE_DIR': '/Users/pimpumpam/my_Python/MLOps/mlflow.db',
+        'ARTIFACT_DIR': '/Users/pimpumpam/my_Python/MLOps/artifacts'
     }
     
 class CfgDatabase:
     engine = 'Sqlite3'
-    database_dir = '/Users/pimpumpam/my_Python/MLOps_Prj/crypto_forecast/crypto.db'
+    database_dir = '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/crypto.db'
     bronze = {
         'CANDLE' : {
             'params': {},
@@ -98,11 +98,39 @@ class CfgDatabase:
                 {'name': 'RATIO_ACC_TRADE_PRICE', 'type': 'REAL'},
                 {'name': 'RATIO_ACC_TRADE_VOLUME', 'type': 'REAL'}
             ]
+        }
+    }
+    gold = {
+        'CANDLE_1MIN': {
+            'scheme': 'dw_gld',
+            'table': 'crypto_transc_candle_upbit_1min',
+            'columns': [
+                {'name': 'MARKET', 'type': 'STRING'},
+                {'name': 'KST_TIME', 'type': 'STRING'},
+                {'name': 'OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'ACC_TRADE_VOLUME', 'type': 'REAL'},
+                {'name': 'DIFF_OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'DIFF_ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'DIFF_ACC_TRADE_VOLUME', 'type': 'REAL'},
+                {'name': 'RATIO_OPEN_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_CLOSE_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_LOW_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_HIGH_PRICE', 'type': 'INTEGER'},
+                {'name': 'RATIO_ACC_TRADE_PRICE', 'type': 'REAL'},
+                {'name': 'RATIO_ACC_TRADE_VOLUME', 'type': 'REAL'}
+            ]
         },
         
-        'CANDLE_10MIN': {
-            'scheme': 'dw_slv',
-            'table': 'crypto_transc_candle_upbit_10min',
+        'CANDLE_5MIN': {
+            'scheme': 'dw_gld',
+            'table': 'crypto_transc_candle_upbit_5min',
             'columns': [
                 {'name': 'MARKET', 'type': 'STRING'},
                 {'name': 'KST_TIME', 'type': 'STRING'},
@@ -127,9 +155,6 @@ class CfgDatabase:
             ]
         }
     }
-    gold = {
-        
-    }
 
 
 class CfgLoader:
@@ -151,11 +176,11 @@ class CfgPreprocessor:
     transform = {
         'SCALER': {
             'name': 'sklearn.preprocessing.MinMaxScaler',
-            'save_dir' : '/Users/pimpumpam/my_Python/MLOps_Prj/crypto_forecast/static'
+            'save_dir' : '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/static'
         },
         'ENCODER': {
             'name': 'sklearn.preprocessing.LabelEncoder',
-            'save_dir' : '/Users/pimpumpam/my_Python/MLOps_Prj/crypto_forecast/static'
+            'save_dir' : '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/static'
         }
     }    
     feature_cols = {
@@ -168,20 +193,53 @@ class CfgPreprocessor:
             'ACC_TRADE_PRICE', 'ACC_TRADE_VOLUME',
             'DIFF_LOW_PRICE', 'DIFF_HIGH_PRICE', 'DIFF_OPEN_PRICE', 'DIFF_CLOSE_PRICE', 'DIFF_ACC_TRADE_PRICE', 'DIFF_ACC_TRADE_VOLUME',
             'RATIO_LOW_PRICE', 'RATIO_HIGH_PRICE', 'RATIO_OPEN_PRICE', 'RATIO_CLOSE_PRICE', 'RATIO_ACC_TRADE_PRICE', 'RATIO_ACC_TRADE_VOLUME'
+        ],
+        'gold': [
+            'LOW_PRICE', 'HIGH_PRICE', 'OPEN_PRICE', 'CLOSE_PRICE',
+            'ACC_TRADE_PRICE', 'ACC_TRADE_VOLUME',
+            'DIFF_LOW_PRICE', 'DIFF_HIGH_PRICE', 'DIFF_OPEN_PRICE', 'DIFF_CLOSE_PRICE', 'DIFF_ACC_TRADE_PRICE', 'DIFF_ACC_TRADE_VOLUME',
+            'RATIO_LOW_PRICE', 'RATIO_HIGH_PRICE', 'RATIO_OPEN_PRICE', 'RATIO_CLOSE_PRICE', 'RATIO_ACC_TRADE_PRICE', 'RATIO_ACC_TRADE_VOLUME'
         ]
     }
 
 class CfgModel:
     platform = 'upbit'
     unit = 'minutes' # minutes, days, weeks, months
-    name = 'DLinear'
-    
+    name = 'LSTM'
+    lstm_layer = {
+        'num_layers': 3,
+        'architecture': [
+            ['nn.LSTM', [18, 100, 1, True, True]],
+            ['nn.ReLU', [False]],
+            ['nn.LSTM', [100, 100, 1, True, True]],
+            ['nn.ReLU', [False]],
+            ['nn.LSTM', [100, 100, 1, True, True]]
+        ]
+    }
+    gru_layer = {
+        'num_layers': 3,
+        'architecture': [
+            ['nn.GRU', [18, 100, 1, True, True]],
+            ['nn.ReLU', [False]],
+            ['nn.GRU', [100, 100, 1, True, True]],
+            ['nn.ReLU', [False]],
+            ['nn.GRU', [100, 100, 1, True, True]]
+        ]
+    }
+    linear_layer = {
+        'num_layers': 2,
+        'architecture': [
+            ['nn.Linear', [100, 50]],
+            ['nn.ReLU', [False]],
+            ['nn.Linear', [50, 1]]
+        ]
+    }
 
 
 class CfgHyperParameter:
-    num_epoch = 2
-    learning_rate = 0.005
-    batch_size = 300
+    num_epoch = [2]
+    learning_rate = [0.005]
+    batch_size = [300]
     
 
 class CfgEvaluate:

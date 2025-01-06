@@ -84,6 +84,8 @@ def train(dataset, model, batch_size, num_epochs, learning_rate, device):
                 feat = mini_batch['feature'].to(device)
                 label = mini_batch['label'].to(device)
                 
+                print(feat.size())
+                            
                 # pred = model(feat)
                 # loss = criterion(pred, label)
                 # loss.backward()

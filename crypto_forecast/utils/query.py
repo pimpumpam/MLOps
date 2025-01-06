@@ -21,7 +21,7 @@ class Query:
         return f"INSERT INTO {scheme}_{table} ({columns}) VALUES ({values});"
     
     @staticmethod
-    def dataframe_to_table(table_info, data, conn):
+    def dataframe_to_table(table_info, data, conn, **kwargs):
         """
         데이터프레임을 데이터베이스 내 테이블로 적재
         
@@ -38,9 +38,17 @@ class Query:
         scheme = table_info['scheme']
         table = table_info['table']
         
+        if 'table_name_suffix' in kwargs:
+            table = table + '_' + kwargs['table_name_suffix']
+        
+        if 'table_exists_handling' not in kwargs:
+            exist_handling = 'append'
+        else:
+            exist_handling = kwargs['table_exists_handling']
+        
         data.to_sql(
             f'{scheme}_{table}', 
             conn, 
-            if_exists='append', 
+            if_exists=exist_handling, 
             index=False
         )

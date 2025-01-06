@@ -1,6 +1,8 @@
 import os
 import argparse
 
+import mlflow
+
 from core.load import Loader
 from core.train import Trainer
 from core.preprocess import Preprocessor
@@ -17,6 +19,8 @@ class Run:
             self.cfg_hyp,
             self.cfg_evaluate
         ) = load_spec_from_config(config_name)
+        
+        mlflow.set_tracking_uri(self.cfg_meta.mlflow['DASHBOARD_URL'])
 
     def load(self):
         loader = Loader(
@@ -38,6 +42,8 @@ class Run:
     def train(self):
         trainer = Trainer(
             self.cfg_meta,
+            self.cfg_database,
+            self.cfg_preprocessor,
             self.cfg_model,
             self.cfg_hyp
         )

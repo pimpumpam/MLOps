@@ -36,3 +36,64 @@
 [2025-01-03 20:41:44,730][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
 [2025-01-03 20:41:44,730][core.preprocess][INFO] >>> Split data as train and test sets
 [2025-01-03 20:41:44,916][core.preprocess][INFO] >>> Apply sliding window to timeseries data
+[2025-01-06 16:56:20,734][core.load][INFO] >>> ETL Crypto Transaction Data from API
+[2025-01-06 16:56:20,735][core.load][INFO] >>> Inquire "UPBIT CANDLE" Data
+[2025-01-06 16:59:11,202][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-06 16:59:11,217][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-06 16:59:11,689][core.load][INFO] >>> Inquire "UPBIT TRADE" Data
+[2025-01-06 16:59:11,724][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-06 16:59:11,725][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-06 16:59:12,185][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-06 16:59:12,245][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-06 16:59:12,292][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-06 16:59:12,292][core.preprocess][INFO] >>> Create derieved features
+[2025-01-06 16:59:12,418][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-06 16:59:12,496][preprocessor.transformation][INFO] >>> Complete fitting & transformation using MinMaxScaler
+[2025-01-06 17:01:38,863][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-06 17:01:38,911][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-06 17:01:38,955][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-06 17:01:38,955][core.preprocess][INFO] >>> Create derieved features
+[2025-01-06 17:01:39,070][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-06 17:01:39,145][preprocessor.transformation][INFO] >>> Complete fitting & transformation using MinMaxScaler
+[2025-01-06 17:01:39,147][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-06 17:01:39,147][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-06 17:01:39,324][core.preprocess][INFO] >>> Apply sliding window to timeseries data
+[2025-01-06 17:12:49,881][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-06 17:12:49,940][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-06 17:12:50,005][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-06 17:12:50,005][core.preprocess][INFO] >>> Create derieved features
+[2025-01-06 17:12:50,146][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-06 17:12:50,226][preprocessor.transformation][INFO] >>> Complete fitting & transformation using MinMaxScaler
+[2025-01-06 17:12:50,228][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-06 17:12:50,228][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-06 17:17:02,860][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-06 17:17:02,909][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-06 17:17:02,948][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-06 17:17:02,948][core.preprocess][INFO] >>> Create derieved features
+[2025-01-06 17:17:03,066][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-06 17:17:03,212][preprocessor.transformation][INFO] >>> Complete fitting & transformation using MinMaxScaler
+[2025-01-06 17:17:03,213][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-06 17:17:03,213][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-06 18:57:34,748][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-06 18:57:34,798][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-06 18:57:34,847][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-06 18:57:34,847][core.preprocess][INFO] >>> Create derieved features
+[2025-01-06 18:57:34,973][core.preprocess][INFO] >>> Load preprocessed result to database.
+[2025-01-06 18:57:35,517][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-06 18:57:35,596][preprocessor.transformation][INFO] >>> Complete fitting & transformation using MinMaxScaler
+[2025-01-06 18:57:35,598][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-06 18:57:35,598][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-06 18:57:35,786][core.preprocess][INFO] >>> Load scaled dataset to database.
+[2025-01-06 18:58:37,605][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-06 18:58:37,653][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-06 18:58:37,695][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-06 18:58:37,695][core.preprocess][INFO] >>> Create derieved features
+[2025-01-06 18:58:37,816][core.preprocess][INFO] >>> Load preprocessed result to database.
+[2025-01-06 18:58:38,349][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-06 18:58:38,428][preprocessor.transformation][INFO] >>> Complete fitting & transformation using MinMaxScaler
+[2025-01-06 18:58:38,428][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-06 18:58:38,429][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-06 18:58:38,684][core.preprocess][INFO] >>> Load scaled dataset to database.
+[2025-01-06 18:58:39,451][core.train][INFO] >>> Read train dataset
+[2025-01-06 18:58:40,005][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-06 18:59:40,258][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.            Execute Run on the "crypto_forecast".
