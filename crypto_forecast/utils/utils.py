@@ -54,11 +54,15 @@ def load_spec_from_config(cfg_name):
         f"configs.{cfg_name}", fromlist=cast(Sequence[str], [None])
     ).CfgHyperParameter
     
+    train_spec = __import__(
+        f"configs.{cfg_name}", fromlist=cast(Sequence[str], [None])
+    ).CfgTrain
+    
     evaluate_spec = __import__(
         f"configs.{cfg_name}", fromlist=cast(Sequence[str], [None])
     ).CfgEvaluate
 
-    return meta_spec, database_spec, loader_spec, preprocessor_spec, model_spec, hyp_spec, evaluate_spec
+    return meta_spec, database_spec, loader_spec, preprocessor_spec, model_spec, hyp_spec, train_spec, evaluate_spec
 
 
 def create_seq_values(table_info, data):

@@ -99,6 +99,7 @@ if __name__ == "__main__":
         _, # cfg_preprocessor
         _, # cfg_model
         _, # cfg_hyp
+        _, # cfg_train
         _, # cfg_evaluate
     ) = load_spec_from_config('dlinear')
 

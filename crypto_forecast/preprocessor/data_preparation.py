@@ -126,10 +126,10 @@ def split_sliding_window(data, feature_col, input_seq_len, label_seq_len=1, **kw
     window_data = sliding_window_view(data_arr, (seq_len,), axis=0).transpose(0, 2, 1)
 
     # set inputs and labels
-    X = window_data[:, :input_seq_len, :]
-    y = window_data[:, input_seq_len:, :]
-
-    return X.squeeze(), y.squeeze()
+    X = window_data[:, :input_seq_len, :].squeeze()
+    y = window_data[:, input_seq_len:, :4].squeeze()
+    
+    return X.copy(), y.copy()
 
 
 class TimeseriesDataset(Dataset):
@@ -150,10 +150,14 @@ class TimeseriesDataset(Dataset):
         self.transform = transform
         
     def __len__(self):
-        return len(self.x)
+        return len(self.feat)
     
-    def __get_item__(self):
-        sample = {'feature': self.feat, 'label': self.label}
+    def __getitem__(self, idx):
+        
+        sample = {
+            'feature': self.feat[idx], 
+            'label': self.label[idx]
+        }
         
         if self.transform:
             sample = self.transform(sample)
@@ -164,8 +168,8 @@ class TimeseriesDataset(Dataset):
 class ToTensor(object):
     def __call__(self, sample):
         feat, label = sample['feature'], sample['label']
-        
+
         return {
-            'feature': torch.from_numpy(feat),
-            'label': torch.from_numpy(label)
+            'feature': torch.from_numpy(feat).to(torch.float32),
+            'label': torch.from_numpy(label).to(torch.float32)
         }

@@ -3,19 +3,30 @@ import sys
 from pathlib import Path
 from datetime import datetime, timedelta
 
-from airflow import DAG 
-from airflow.operators.bash import BashOperator
-from airflow.operators.python import PythonOperator
-from airflow.utils.trigger_rule import TriggerRule
+import mlflow
+
+# from airflow import DAG 
+# from airflow.operators.bash import BashOperator
+# from airflow.operators.python import PythonOperator
+# from airflow.utils.trigger_rule import TriggerRule
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[1]
+CONFIG_DIR = os.path.join(ROOT, "configs")
+MLFLOW_DIR = os.path.join(ROOT, "mlflow_manager")
 PROJECT_DIR = os.path.join(ROOT, "crypto_forecast")
+sys.path.append(CONFIG_DIR)
+sys.path.append(MLFLOW_DIR)
 sys.path.append(PROJECT_DIR)
 
 from run import Run
+from compose import CfgMLFlow
+from crypto_forecast import CfgMeta
 
-runner = Run('dlinear')
+mlflow.set_tracking_uri(CfgMLFlow.server_url)
+
+runner = Run(CfgMeta.config)
+# mlflow_manager = # 모델 deploy 관련 프로세스 실행하는 클래스 호출
 
 default_args = {
     'owner': 'Changseon',

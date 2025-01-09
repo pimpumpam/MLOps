@@ -2,7 +2,7 @@ class CfgMeta:
     name = 'CRYPTO_FORECAST'
     exp_name = 'crypto_forecast'
     mlflow = {
-        'DASHBOARD_URL': 'http://127.0.0.1:8331',
+        'DASHBOARD_URL': 'http://127.0.0.1:8334',
         'DATABASE_DIR': '/Users/pimpumpam/my_Python/MLOps/mlflow.db',
         'ARTIFACT_DIR': '/Users/pimpumpam/my_Python/MLOps/artifacts'
     }
@@ -170,17 +170,19 @@ class CfgLoader:
 class CfgPreprocessor:
     platform = 'upbit'
     unit = 'minutes' # minutes, days, weeks, months
-    seq_len = 120 # 2시간
+    seq_len = 60 # 1시간
     split_ratio = 0.7
     split_point = '2024-12-25T23:59:59'
     transform = {
         'SCALER': {
-            'name': 'sklearn.preprocessing.MinMaxScaler',
-            'save_dir' : '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/static'
+            'name': 'MinMaxScaler',
+            'save_dir' : '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/static',
+            'save_name': 'candle_scaler'
         },
         'ENCODER': {
             'name': 'sklearn.preprocessing.LabelEncoder',
-            'save_dir' : '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/static'
+            'save_dir' : '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/static',
+            'save_name': 'candle_encoder'
         }
     }    
     feature_cols = {
@@ -205,44 +207,57 @@ class CfgPreprocessor:
 class CfgModel:
     platform = 'upbit'
     unit = 'minutes' # minutes, days, weeks, months
-    name = 'LSTM'
+    name = 'GRU'
     lstm_layer = {
-        'num_layers': 3,
+        'num_layers': 2,
+        'hidden_dim': 50,
         'architecture': [
-            ['nn.LSTM', [18, 100, 1, True, True]],
-            ['nn.ReLU', [False]],
-            ['nn.LSTM', [100, 100, 1, True, True]],
-            ['nn.ReLU', [False]],
-            ['nn.LSTM', [100, 100, 1, True, True]]
+            ['nn.LSTM', [18, 50, 2, True, True]],
         ]
     }
     gru_layer = {
-        'num_layers': 3,
+        'num_layers': 2,
+        'hidden_dim': 50,
         'architecture': [
-            ['nn.GRU', [18, 100, 1, True, True]],
-            ['nn.ReLU', [False]],
-            ['nn.GRU', [100, 100, 1, True, True]],
-            ['nn.ReLU', [False]],
-            ['nn.GRU', [100, 100, 1, True, True]]
+            ['nn.GRU', [18, 50, 2, True, True]],
         ]
     }
     linear_layer = {
         'num_layers': 2,
         'architecture': [
-            ['nn.Linear', [100, 50]],
-            ['nn.ReLU', [False]],
-            ['nn.Linear', [50, 1]]
+            ['nn.Linear', [3000, 4]], # GRU_Hidden x num_seq
         ]
     }
 
 
 class CfgHyperParameter:
-    num_epoch = [2]
-    learning_rate = [0.005]
-    batch_size = [300]
+    num_epoch = [1]
+    learning_rate = [0.005, 0.01]
+    batch_size = [20]
     
 
+class CfgTrain:
+    scheme = 'dw_gld'
+    table = 'crypto_transc_candle_upbit_1min_train'
+    field = {
+        'feature': [
+            'LOW_PRICE', 'HIGH_PRICE', 'OPEN_PRICE', 'CLOSE_PRICE',
+            'ACC_TRADE_PRICE', 'ACC_TRADE_VOLUME',
+            'DIFF_LOW_PRICE', 'DIFF_HIGH_PRICE', 'DIFF_OPEN_PRICE', 'DIFF_CLOSE_PRICE', 'DIFF_ACC_TRADE_PRICE', 'DIFF_ACC_TRADE_VOLUME',
+            'RATIO_LOW_PRICE', 'RATIO_HIGH_PRICE', 'RATIO_OPEN_PRICE', 'RATIO_CLOSE_PRICE', 'RATIO_ACC_TRADE_PRICE', 'RATIO_ACC_TRADE_VOLUME'
+        ],
+        'label': ['LOW_PRICE', 'HIGH_PRICE', 'OPEN_PRICE', 'CLOSE_PRICE']
+    }
+
 class CfgEvaluate:
-    platform = 'upbit'
-    unit = 'minutes' # minutes, days, weeks, months
-    table = f'crypto_transaction_{platform}_{unit}'
+    scheme = 'dw_gld'
+    table = 'crypto_transc_candle_upbit_1min_test'
+    field = {
+        'feature': [
+            'LOW_PRICE', 'HIGH_PRICE', 'OPEN_PRICE', 'CLOSE_PRICE',
+            'ACC_TRADE_PRICE', 'ACC_TRADE_VOLUME',
+            'DIFF_LOW_PRICE', 'DIFF_HIGH_PRICE', 'DIFF_OPEN_PRICE', 'DIFF_CLOSE_PRICE', 'DIFF_ACC_TRADE_PRICE', 'DIFF_ACC_TRADE_VOLUME',
+            'RATIO_LOW_PRICE', 'RATIO_HIGH_PRICE', 'RATIO_OPEN_PRICE', 'RATIO_CLOSE_PRICE', 'RATIO_ACC_TRADE_PRICE', 'RATIO_ACC_TRADE_VOLUME'
+        ],
+        'label': ['LOW_PRICE', 'HIGH_PRICE', 'OPEN_PRICE', 'CLOSE_PRICE']
+    }

@@ -2,6 +2,7 @@ import os
 import argparse
 
 import mlflow
+from mlflow.models.signature import infer_signature
 
 from models.model import Model
 from trainer.train import setup_experiment, train
@@ -15,20 +16,22 @@ from utils.utils import load_spec_from_config, hyperparameter_combination
 LOGGER = setup_logger(__name__, 'train_workflow.log')
 
 class Trainer:
-    def __init__(self, cfg_meta, cfg_database, cfg_preprocessor, cfg_model, cfg_hyp):
+    def __init__(self, cfg_meta, cfg_database, cfg_preprocessor, cfg_model, cfg_hyp, cfg_train):
         self.cfg_meta = cfg_meta
+        self.cfg_database = cfg_database
         self.cfg_preprocessor = cfg_preprocessor
         self.cfg_model = cfg_model
         self.cfg_hyp = cfg_hyp
+        self.cfg_train = cfg_train
         self.db_manager = SQLiteDBManager(cfg_database.database_dir)
 
     def run(self):
         
         LOGGER.info("Read train dataset")
         train_data = self.db_manager.fetch_to_dataframe(
-            """
+            f"""
             SELECT *
-            FROM dw_gld_crypto_transc_candle_upbit_1min_train
+            FROM {self.cfg_train.scheme}_{self.cfg_train.table}
             WHERE 1=1
                 AND MARKET='KRW-BTC'
             ;
@@ -38,7 +41,7 @@ class Trainer:
         LOGGER.info("Apply sliding window to train data")
         X_train, y_train = split_sliding_window(
             data = train_data,
-            feature_col = self.cfg_preprocessor.feature_cols['gold'],
+            feature_col = self.cfg_train.field['feature'],
             input_seq_len = self.cfg_preprocessor.seq_len,
             label_seq_len = 1,
             time_col = 'KST_TIME'
@@ -56,23 +59,55 @@ class Trainer:
         # set run
         with mlflow.start_run(run_name=self.cfg_model.name) as run:
             
+            # model schema
+            signature = infer_signature(X_train[0], y_train[0])
+            
             # train code
             if len(hyp_list)>1:
-                LOGGER.info("Hyperparmaeter optimization process need to be developed")
+                for idx, hyp in enumerate(hyp_list):
+                    
+                    model = Model(self.cfg_model)
+                    
+                    with mlflow.start_run(run_name=f"{self.cfg_model.name}_{str(idx+1)}", nested=True) as nested_run:
+                        LOGGER.info(f"Initialize model training (Nested) | Exp: {self.cfg_meta.exp_name} | Run: {nested_run.info.run_id}")
+                        train(
+                            dataset = (X_train, y_train),
+                            model = model,
+                            batch_size = hyp['batch_size'],
+                            num_epochs = hyp['num_epoch'],
+                            learning_rate = hyp['learning_rate'],
+                            device='cpu'
+                        )
+                        
+                        mlflow.log_params(hyp)
+                        mlflow.pytorch.log_model(
+                            pytorch_model = model,
+                            artifact_path = 'model',
+                            signature=signature
+                        )
                 
             else:
-                hyp = hyp_list.pop()
+                LOGGER.info(f"Initialize model training | Exp: {self.cfg_meta.exp_name} | Run: {run.info.run_id}")
                 
-                LOGGER.info("Train model")
+                hyp = hyp_list.pop()
+                model = Model(self.cfg_model)
+                
                 train(
                     dataset = (X_train, y_train),
-                    model = Model(self.cfg_model),
-                    batch_size = hyp_list['batch_size'],
-                    num_epochs = hyp_list['num_epochs'],
-                    learning_rate = hyp_list['learning_rate'],
+                    model = model,
+                    batch_size = hyp['batch_size'],
+                    num_epochs = hyp['num_epoch'],
+                    learning_rate = hyp['learning_rate'],
                     device = 'cpu'
                 )
-
+                
+                mlflow.log_params(hyp)
+                mlflow.pytorch.log_model(
+                    pytorch_model = model,
+                    artifact_path = 'model',
+                    signature=signature
+                )
+                
 
 if __name__ == "__main__":
 
@@ -88,9 +123,10 @@ if __name__ == "__main__":
         cfg_preprocessor,
         cfg_model,
         cfg_hyp,
+        cfg_train,
         _, # cfg_evaluate
     ) = load_spec_from_config('dlinear')
 
     # train
-    learner = Trainer(cfg_meta, cfg_database, cfg_preprocessor, cfg_model, cfg_hyp)
+    learner = Trainer(cfg_meta, cfg_database, cfg_preprocessor, cfg_model, cfg_hyp, cfg_train)
     learner.run()

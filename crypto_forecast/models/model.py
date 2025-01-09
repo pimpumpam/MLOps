@@ -17,7 +17,8 @@ class Model(nn.Module):
             
     def forward(self, x):
         
-        rnn_out = self.rnn_layer(x)
+        rnn_out = self.rnn_layer(x)        
+        rnn_out = rnn_out.reshape(rnn_out.size(0), -1)
         pred = self.linear_layer(rnn_out)
         
         return pred

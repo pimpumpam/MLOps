@@ -16,29 +16,6 @@ from utils.utils import PROGRESS_BAR_FORMAT
 
 LOGGER = setup_logger(__name__, 'train_workflow.log')
 
-
-def setup_experiment(experiment_name, artifact_location):
-
-    try:
-        mlflow.create_experiment(
-            experiment_name, 
-            artifact_location=artifact_location
-        )
-
-        LOGGER.info(
-            f"🧪 Experiment {experiment_name} is not Exist.\
-            Create Experiment."
-        )
-    except:
-        LOGGER.info(
-            f"🧪 Experienmt {experiment_name} is Already Exist.\
-            Execute Run on the \"{experiment_name}\"."
-        )
-            
-    # set experiment
-    mlflow.set_experiment(experiment_name)
-
-
 def train(dataset, model, batch_size, num_epochs, learning_rate, device):
     """
     모델 학습
@@ -66,31 +43,52 @@ def train(dataset, model, batch_size, num_epochs, learning_rate, device):
     dataloader = DataLoader(
         dataset, 
         batch_size=batch_size, 
-        shuffle=True
+        shuffle=True,
+        num_workers=0
     )
     
-    # model.to(device)
+    model.to(device)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     
-    LOGGER.info(('%20s'*3)%('Epoch', 'GPU_Mem', 'Loss'))
+    # LOGGER.info(('%20s'*3)%('Epoch', 'GPU_Mem', 'Loss'))
+    print(('%20s'*3)%('Epoch', 'GPU_Mem', 'Loss'))
     for epoch in range(num_epochs):
-        model.train()
-        
-        with tqdm(dataloader, total=len(dataloader), bar_format=PROGRESS_BAR_FORMAT, file=LOGGER) as tq:
-            for step, mini_batch in enumerate(tq):
-                
-                optimizer.zero_grad()
-                feat = mini_batch['feature'].to(device)
-                label = mini_batch['label'].to(device)
-                
-                print(feat.size())
-                            
-                # pred = model(feat)
-                # loss = criterion(pred, label)
-                # loss.backward()
-                # optimizer.step()
-                
-                # mem = f"{torch.cuda.memory_reserved()/1E9 if torch.cuda.is_available() else 0:.3g}G"
-                # tq.set_description(('%20s'*3)%(f"{epoch+1}/{num_epochs}", mem, f"{loss.item():.4}"))
+        model.train()    
+        with tqdm(dataloader, total=len(dataloader), bar_format=PROGRESS_BAR_FORMAT) as tq:
+                for step, mini_batch in enumerate(tq):
+                    
+                    optimizer.zero_grad()
+                    feat = mini_batch['feature'].to(device)
+                    label = mini_batch['label'].to(device)
+                    pred = model(feat)
+                    
+                    loss = criterion(pred, label)
+                    loss.backward()
+                    optimizer.step()
+                    
+                    mem = f"{torch.cuda.memory_reserved()/1E9 if torch.cuda.is_available() else 0:.3g}G"
+                    tq.set_description(('%20s'*3)%(f"{epoch+1}/{num_epochs}", mem, f"{loss.item():.4}"))
+                    # LOGGER.info(('%20s'*3)%(f"{epoch+1}/{num_epochs}", mem, f"{loss.item():.4}"))
+
+
+def setup_experiment(experiment_name, artifact_location):
     
+    try:
+        mlflow.create_experiment(
+            experiment_name, 
+            artifact_location=artifact_location
+        )
+
+        LOGGER.info(
+            f"🧪 Experiment {experiment_name} is not Exist. \
+            Create Experiment."
+        )
+    except:
+        LOGGER.info(
+            f"🧪 Experienmt {experiment_name} is Already Exist. \
+            Execute Run on the \"{experiment_name}\"."
+        )
+            
+    # set experiment
+    mlflow.set_experiment(experiment_name)

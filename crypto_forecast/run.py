@@ -6,6 +6,7 @@ import mlflow
 from core.load import Loader
 from core.train import Trainer
 from core.preprocess import Preprocessor
+from core.evaluate import Evaluator
 from utils.utils import load_spec_from_config
 
 class Run:
@@ -17,6 +18,7 @@ class Run:
             self.cfg_preprocessor,
             self.cfg_model,
             self.cfg_hyp,
+            self.cfg_train,
             self.cfg_evaluate
         ) = load_spec_from_config(config_name)
         
@@ -45,13 +47,19 @@ class Run:
             self.cfg_database,
             self.cfg_preprocessor,
             self.cfg_model,
-            self.cfg_hyp
+            self.cfg_hyp,
+            self.cfg_train
         )
         trainer.run()
 
-    # def evaluate(self):
-    #     evaluator = Evaluator()
-    #     evaluator.run()
+    def evaluate(self):
+        evaluator = Evaluator(
+            self.cfg_meta,
+            self.cfg_database,
+            self.cfg_preprocessor,
+            self.cfg_evaluate
+        )
+        evaluator.run()
 
 if __name__ == "__main__":
     
@@ -65,10 +73,13 @@ if __name__ == "__main__":
     # runner.load()
 
     # preprocessing
-    runner.preprocess() 
+    # runner.preprocess() 
 
     # training
-    runner.train() 
+    # runner.train() 
     
     # evaluating
-    # runner.evaluate()  
+    runner.evaluate()  
+    
+    
+    

@@ -15,8 +15,21 @@ class LSTMLayer(nn.Module):
             self.model.append(layer)
         
     def forward(self, x):
+        
+        h = torch.zeros(
+            self.cfg_model.gru_layer['num_layers'],
+            x.size()[0],
+            self.cfg_model.gru_layer['hidden_dim']
+        )
+        
+        c = torch.zeros(
+            self.cfg_model.gru_layer['num_layers'],
+            x.size()[0], 
+            self.cfg_model.gru_layer['hidden_dim']
+        )
+        
         for layer in self.model:
-            x = layer(x)
+            x, (h, c) = layer(x, (h, c))
             
         return x
         
@@ -32,10 +45,17 @@ class GRULayer(nn.Module):
         for idx, (module, args) in enumerate(cfg_model.gru_layer['architecture']):
             layer = eval(module)(*args)
             
-            self.model.appen(layer)
+            self.model.append(layer)
             
     def forward(self, x):
+        
+        h = torch.zeros(
+            self.cfg_model.gru_layer['num_layers'],
+            x.size(0),
+            self.cfg_model.gru_layer['hidden_dim']
+        )
+        
         for layer in self.model:
-            x = layer(x)
+            x, h = layer(x, h)
             
         return x

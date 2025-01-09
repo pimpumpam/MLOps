@@ -142,7 +142,7 @@ class Preprocessor:
         
         # ****************************** GOLD ******************************
         
-        LOGGER.info("Apply scaler to data")
+        LOGGER.info("Apply scaler to data")        
         scaler = MultiColumnScaler(self.cfg_preprocessor.transform['SCALER']['name'])
         scaler.fit_transform(
             data=candle_data,
@@ -150,7 +150,7 @@ class Preprocessor:
             inplace=True,
             save_pkl=True,
             save_path=self.cfg_preprocessor.transform['SCALER']['save_dir'],
-            save_name='candle_1min_scaler'
+            save_name=self.cfg_preprocessor.transform['SCALER']['save_name']
         )
         
         # scaler_5min = MultiColumnScaler(self.cfg_preprocessor.transform['SCALER']['name'])
@@ -207,8 +207,9 @@ if __name__ == "__main__":
         cfg_preprocessor,
         _, # cfg_model
         _, # cfg_hyp
+        _, # cfg_train
         _, # cfg_evaluate
     ) = load_spec_from_config('dlinear')
-
+    
     preprocessor = Preprocessor(cfg_meta, cfg_database, cfg_loader, cfg_preprocessor)
     preprocessor.run()
