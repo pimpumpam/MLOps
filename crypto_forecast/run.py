@@ -1,7 +1,13 @@
 import os
+import sys
 import argparse
+from pathlib import Path
 
 import mlflow
+
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[0]
+sys.path.append(str(ROOT))
 
 from core.load import Loader
 from core.train import Trainer
@@ -25,12 +31,16 @@ class Run:
         mlflow.set_tracking_uri(self.cfg_meta.mlflow['DASHBOARD_URL'])
 
     def load(self):
+        print("Load 객체 호출 하기 전")
         loader = Loader(
             self.cfg_meta,
             self.cfg_database,
             self.cfg_loader
         )
+        print("Load 객체 호출 후")
+        print("Load 객체 실행 전")
         loader.run()
+        print("Load 객체 실행 후")
 
     def preprocess(self):
         preprocessor = Preprocessor(
@@ -70,13 +80,13 @@ if __name__ == "__main__":
     runner = Run(args.config)   
 
     # loading
-    # runner.load()
+    runner.load()
 
     # preprocessing
-    # runner.preprocess() 
+    runner.preprocess()
 
     # training
-    # runner.train() 
+    runner.train() 
     
     # evaluating
     runner.evaluate()  

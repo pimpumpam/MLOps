@@ -1,14 +1,19 @@
 import os
+import sys
+from pathlib import Path
 
 from preprocessor.transformation import MultiColumnScaler
 from preprocessor.data_preparation import split_train_test
 from preprocessor.feature_engineering import aggregate_by_time, amount_of_change_price, amount_of_change_rate
 from preprocessor.preprocess import validate_missing_timestamp, validate_missing_values, validate_duplicate_values, fill_time_gaps, fill_missing_values
-
-from utils.query import Query
-from utils.database import SQLiteDBManager
 from utils.logger import setup_logger
 from utils.utils import load_spec_from_config
+
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[2]
+sys.path.append(str(ROOT))
+from sqlite_manager.query import Query
+from sqlite_manager.database import SQLiteDBManager
 
 
 LOGGER = setup_logger(__name__, 'train_workflow.log')

@@ -1,7 +1,9 @@
 import os
+import sys
 import pickle
 import argparse
 import pandas as pd
+from pathlib import Path
 
 import mlflow
 
@@ -9,13 +11,18 @@ from preprocessor.transformation import MultiColumnScaler
 from preprocessor.data_preparation import split_sliding_window
 from evaluator.evaluate import evaluate
 from utils.metrics import mean_absolute_error, root_mean_square_error, mean_absolute_percentage_error
-from utils.database import SQLiteDBManager
 from utils.logger import setup_logger
+
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[2]
+sys.path.append(str(ROOT))
+from sqlite_manager.database import SQLiteDBManager
+
 
 LOGGER = setup_logger(__name__, 'train_workflow.log')
 
 
-RUN_ID = '97c7d2ab396d461bb8d4e2351668ffe3'
+RUN_ID = 'e73150cf9c1f48c198f131732cd8ab10'
 
 class Evaluator:
     

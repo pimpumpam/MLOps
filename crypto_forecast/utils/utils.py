@@ -65,7 +65,7 @@ def load_spec_from_config(cfg_name):
     return meta_spec, database_spec, loader_spec, preprocessor_spec, model_spec, hyp_spec, train_spec, evaluate_spec
 
 
-def create_seq_values(table_info, data):
+def create_seq_values(table_info, data, **kwargs):
     """
     테이블 내 값 적재를 위한 iterable 변수 생성
 
@@ -80,9 +80,14 @@ def create_seq_values(table_info, data):
 
     """
 
+    if 'column_key' in kwargs:
+        column_key = kwargs['column_key']
+    else:
+        column_key = 'source'
+    
     param_seq = []
     for attr in data:
-        row = [attr[col['source']] for col in table_info['columns']]
+        row = [attr[col[column_key]] for col in table_info['columns']]
         param_seq.append(row)
     
     return param_seq

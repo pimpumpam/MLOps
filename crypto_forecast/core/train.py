@@ -1,5 +1,7 @@
 import os
+import sys
 import argparse
+from pathlib import Path
 
 import mlflow
 from mlflow.models.signature import infer_signature
@@ -7,10 +9,14 @@ from mlflow.models.signature import infer_signature
 from models.model import Model
 from trainer.train import setup_experiment, train
 from preprocessor.data_preparation import split_sliding_window
-
-from utils.database import SQLiteDBManager
 from utils.logger import setup_logger
 from utils.utils import load_spec_from_config, hyperparameter_combination
+
+
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[2]
+sys.path.append(str(ROOT))
+from sqlite_manager.database import SQLiteDBManager
 
 
 LOGGER = setup_logger(__name__, 'train_workflow.log')
@@ -28,6 +34,7 @@ class Trainer:
     def run(self):
         
         LOGGER.info("Read train dataset")
+        print("Read Train Dataset")
         train_data = self.db_manager.fetch_to_dataframe(
             f"""
             SELECT *
@@ -39,6 +46,7 @@ class Trainer:
         )
         
         LOGGER.info("Apply sliding window to train data")
+        print("Apply Sliding Window to Train Data")
         X_train, y_train = split_sliding_window(
             data = train_data,
             feature_col = self.cfg_train.field['feature'],
@@ -48,22 +56,27 @@ class Trainer:
         )
         
         # set experiment
+        print(f"Set Experiment as {self.cfg_meta.exp_name}")
         setup_experiment(
             self.cfg_meta.exp_name,
             artifact_location=self.cfg_meta.mlflow['ARTIFACT_DIR']
         )
         
         # set hyperparameter
+        print(f"Set Hyperparameters")
         hyp_list = hyperparameter_combination(self.cfg_hyp)
         
         # set run
+        print("Set Run")
         with mlflow.start_run(run_name=self.cfg_model.name) as run:
             
             # model schema
+            print("Input & Label Data Signature")
             signature = infer_signature(X_train[0], y_train[0])
             
             # train code
             if len(hyp_list)>1:
+                print("Initiate Hyperparameter Optimization")
                 for idx, hyp in enumerate(hyp_list):
                     
                     model = Model(self.cfg_model)
@@ -87,11 +100,13 @@ class Trainer:
                         )
                 
             else:
+                print("Initiate Non-Hyperparameter Optimization")
                 LOGGER.info(f"Initialize model training | Exp: {self.cfg_meta.exp_name} | Run: {run.info.run_id}")
                 
                 hyp = hyp_list.pop()
                 model = Model(self.cfg_model)
                 
+                print("Train Model")
                 train(
                     dataset = (X_train, y_train),
                     model = model,
@@ -101,6 +116,7 @@ class Trainer:
                     device = 'cpu'
                 )
                 
+                print("Log Meta Data and Model")
                 mlflow.log_params(hyp)
                 mlflow.pytorch.log_model(
                     pytorch_model = model,

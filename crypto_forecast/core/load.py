@@ -1,13 +1,19 @@
 import os
+import sys
 import time
 import datetime
+from pathlib import Path
 
 from loader.load import inquire_candle_data, inquire_recent_trade_data
 
-from utils.query import Query
-from utils.database import SQLiteDBManager
 from utils.logger import setup_logger
 from utils.utils import create_seq_values, load_spec_from_config
+
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[2]
+sys.path.append(str(ROOT))
+from sqlite_manager.query import Query
+from sqlite_manager.database import SQLiteDBManager
 
 
 LOGGER = setup_logger(__name__, 'train_workflow.log')
@@ -22,9 +28,11 @@ class Loader:
     def run(self):
         LOGGER.info("ETL Crypto Transaction Data from API")    
 
+        print("업비트 데이터 호출 시작!!")
         for api, prop in self.cfg_database.bronze.items():
             LOGGER.info(f"Inquire \"{self.cfg_loader.platform.upper()} {api}\" Data")
-
+            print("캔들 데이터 요청 시작!!")
+            
             # inquire data    
             data = []
             for market in self.cfg_loader.market:
@@ -33,9 +41,10 @@ class Loader:
             
                 if api == 'CANDLE':
                     while True:
+                        
                         if tic > toc:
                             break
-
+                        print(f"{tic}부터 {toc}까지 데이터 요청")
                         datum = inquire_candle_data(
                             market=market,
                             tgt_date=toc,
@@ -80,11 +89,13 @@ class Loader:
 
             # create table
             LOGGER.info(f"Create Table as \"{self.cfg_database.bronze[api]['scheme']}_{self.cfg_database.bronze[api]['table']}\"")
+            print("데이터베이스 내 테이블 생성")
             query = Query.create_table(prop)
             self.db_manager.execute_query(query=query)
 
             # insert data
             LOGGER.info(f"Insert Data into \"{self.cfg_database.bronze[api]['scheme']}_{self.cfg_database.bronze[api]['table']}\"")
+            print("데이터베이스 내 데이터 적재")
             query = Query.insert_data_to_table(prop)
             param_seq = create_seq_values(prop, data)
             self.db_manager.execute_many_query(query, param_seq)
