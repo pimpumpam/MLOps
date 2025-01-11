@@ -22,7 +22,7 @@ from sqlite_manager.database import SQLiteDBManager
 LOGGER = setup_logger(__name__, 'train_workflow.log')
 
 
-RUN_ID = 'e73150cf9c1f48c198f131732cd8ab10'
+RUN_ID = 'cdacfebf29e141879846adf192c4f683'
 
 class Evaluator:
     

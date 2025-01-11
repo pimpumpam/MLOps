@@ -48,28 +48,30 @@ def train(dataset, model, batch_size, num_epochs, learning_rate, device):
     )
     
     model.to(device)
+    model.train()   
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     
-    # LOGGER.info(('%20s'*3)%('Epoch', 'GPU_Mem', 'Loss'))
-    print(('%20s'*3)%('Epoch', 'GPU_Mem', 'Loss'))
+    print(('%20s'*4)%('Epoch', 'Iteration', 'GPU_Mem', 'Loss'))
     for epoch in range(num_epochs):
-        model.train()    
-        with tqdm(dataloader, total=len(dataloader), bar_format=PROGRESS_BAR_FORMAT) as tq:
-                for step, mini_batch in enumerate(tq):
+        print("!!! PASS EPOCH LOOP !!!")
+        for step, mini_batch in enumerate(dataloader):
+            print("!!! PASS ITERATION LOOP !!!")
+        # with tqdm(dataloader, total=len(dataloader), bar_format=PROGRESS_BAR_FORMAT, disable=True) as tq:
+                # for step, mini_batch in enumerate(tq):
                     
-                    optimizer.zero_grad()
-                    feat = mini_batch['feature'].to(device)
-                    label = mini_batch['label'].to(device)
-                    pred = model(feat)
-                    
-                    loss = criterion(pred, label)
-                    loss.backward()
-                    optimizer.step()
-                    
-                    mem = f"{torch.cuda.memory_reserved()/1E9 if torch.cuda.is_available() else 0:.3g}G"
-                    tq.set_description(('%20s'*3)%(f"{epoch+1}/{num_epochs}", mem, f"{loss.item():.4}"))
-                    # LOGGER.info(('%20s'*3)%(f"{epoch+1}/{num_epochs}", mem, f"{loss.item():.4}"))
+            optimizer.zero_grad()
+            feat = mini_batch['feature'].to(device)
+            label = mini_batch['label'].to(device)
+            pred = model(feat)
+            
+            loss = criterion(pred, label)
+            loss.backward() # --> 여기서 SIGABRT 에러 발생
+            optimizer.step()
+            
+            mem = f"{torch.cuda.memory_reserved()/1E9 if torch.cuda.is_available() else 0:.3g}G"
+            if step % 500 == 0:
+                print(('%20s'*4)%(f"{epoch+1}/{num_epochs}", f"{step}/{len(dataloader)}", mem, f"{loss.item():.4}"))
 
 
 def setup_experiment(experiment_name, artifact_location):

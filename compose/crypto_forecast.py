@@ -7,7 +7,7 @@ class CfgMeta:
     
 class CfgDatabase:
     engine = 'Sqlite3'
-    database_dir = '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/crypto.db'
+    database_dir = '/Users/pimpumpam/Desktop/myScript/MLOps_Prj/mlOps_prj/crypto_forecast/crypto.db'
     register_model = {
         'scheme': 'dw_model',
         'table': 'registred_model',

@@ -38,17 +38,18 @@ def evaluate(dataset, model, batch_size, device):
     print(('%20s'*3)%('Iteration', 'GPU_Mem', ''))
     with torch.no_grad():
         model.eval()
-        with tqdm(dataloader, total=len(dataloader), bar_format=PROGRESS_BAR_FORMAT) as tq:
+        # with tqdm(dataloader, total=len(dataloader), bar_format=PROGRESS_BAR_FORMAT, disable=True) as tq:
             
-            for step, mini_batch in enumerate(tq):
-                feat = mini_batch['feature'].to(device)
-                label = mini_batch['label']
-                pred_ = model(feat)
+        for step, mini_batch in enumerate(dataloader):
+            feat = mini_batch['feature'].to(device)
+            label = mini_batch['label']
+            pred_ = model(feat)
+        
+            pred.extend(pred_.detach().cpu().tolist())
+            truth.extend(label.detach().cpu().tolist())
             
-                pred.extend(pred_.detach().cpu().tolist())
-                truth.extend(label.detach().cpu().tolist())
-                
-                mem = f"{torch.cuda.memory_reserved()/1E9 if torch.cuda.is_available() else 0:.3g}G"
-                tq.set_description(('%20s'*3)%(f"{step+1}/{len(dataloader)}", mem, " "))
+            mem = f"{torch.cuda.memory_reserved()/1E9 if torch.cuda.is_available() else 0:.3g}G"
+            if step % 100 == 0:
+                print(('%20s'*3)%(f"{step+1}/{len(dataloader)}", mem, " "))
                 
     return pred, truth

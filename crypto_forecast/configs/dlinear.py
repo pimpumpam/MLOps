@@ -9,7 +9,7 @@ class CfgMeta:
     
 class CfgDatabase:
     engine = 'Sqlite3'
-    database_dir = '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/crypto.db'
+    database_dir = '/Users/pimpumpam/Desktop/myScript/MLOps_Prj/mlOps_prj/crypto_forecast/crypto.db'
     bronze = {
         'CANDLE' : {
             'params': {},
@@ -176,7 +176,7 @@ class CfgPreprocessor:
     transform = {
         'SCALER': {
             'name': 'MinMaxScaler',
-            'save_dir' : '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/static',
+            'save_dir' : '/Users/pimpumpam/Desktop/myScript/MLOps_Prj/mlOps_prj/crypto_forecast/static',
             'save_name': 'candle_scaler'
         },
         'ENCODER': {
@@ -232,7 +232,7 @@ class CfgModel:
 
 class CfgHyperParameter:
     num_epoch = [1]
-    learning_rate = [0.005, 0.01]
+    learning_rate = [0.01]
     batch_size = [20]
     
 

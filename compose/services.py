@@ -2,7 +2,7 @@ class CfgMLFlow:
     server_url = "http://127.0.0.1:8334"
 
 class CfgAirFlow:
-    server_url = "http://127.0.0.1:8332"
+    server_url = "http://127.0.0.1:8335"
     dags_dir = "/Users/pimpumpam/my_Python/MLOps/dags"
     
 class CfgSlack:
