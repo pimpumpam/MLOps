@@ -1,0 +1,159 @@
+[2025-01-10 14:30:20,572][core.evaluate][INFO] >>> Read test dataset
+[2025-01-10 14:30:46,344][core.load][INFO] >>> ETL Crypto Transaction Data from API
+[2025-01-10 14:30:46,344][core.load][INFO] >>> Inquire "UPBIT CANDLE" Data
+[2025-01-10 14:34:17,996][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-10 14:34:18,001][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-10 14:34:18,474][core.load][INFO] >>> Inquire "UPBIT TRADE" Data
+[2025-01-10 14:34:18,511][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-10 14:34:18,512][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-10 14:34:18,864][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-10 14:34:18,924][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-10 14:34:18,975][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-10 14:34:18,975][core.preprocess][INFO] >>> Create derieved features
+[2025-01-10 14:34:19,098][core.preprocess][INFO] >>> Load preprocessed result to database.
+[2025-01-10 14:34:19,617][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-10 14:34:19,715][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-10 14:34:19,715][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-10 14:34:19,901][core.preprocess][INFO] >>> Load scaled dataset to database.
+[2025-01-10 14:34:20,452][core.train][INFO] >>> Read train dataset
+[2025-01-10 14:34:20,984][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-10 14:34:22,082][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.             Execute Run on the "crypto_forecast".
+[2025-01-10 14:34:22,373][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: b1214d1ca716423d881dfa649c028b84
+[2025-01-10 14:36:42,332][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: 337f636661604b60b126be5a947cb832
+[2025-01-10 14:39:59,985][core.evaluate][INFO] >>> Read test dataset
+[2025-01-10 14:40:00,114][core.evaluate][INFO] >>> Apply sliding window to test data
+[2025-01-10 14:40:00,176][core.evaluate][INFO] >>> Load Scaler Object
+[2025-01-10 14:40:00,207][core.evaluate][INFO] >>> Initialize model evaluating (Nested)
+[2025-01-10 22:45:31,748][core.load][INFO] >>> ETL Crypto Transaction Data from API
+[2025-01-10 22:45:31,748][core.load][INFO] >>> Inquire "UPBIT CANDLE" Data
+[2025-01-10 22:48:01,930][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-10 22:48:01,934][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-10 22:48:02,140][core.load][INFO] >>> Inquire "UPBIT TRADE" Data
+[2025-01-10 22:48:02,149][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-10 22:48:02,150][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-10 22:48:02,285][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-10 22:48:02,299][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-10 22:48:02,317][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-10 22:48:02,318][core.preprocess][INFO] >>> Create derieved features
+[2025-01-10 22:48:02,341][core.preprocess][INFO] >>> Load preprocessed result to database.
+[2025-01-10 22:48:02,548][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-10 22:51:07,273][core.load][INFO] >>> ETL Crypto Transaction Data from API
+[2025-01-10 22:51:07,273][core.load][INFO] >>> Inquire "UPBIT CANDLE" Data
+[2025-01-10 22:53:35,442][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-10 22:53:35,444][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-10 22:53:35,652][core.load][INFO] >>> Inquire "UPBIT TRADE" Data
+[2025-01-10 22:53:35,661][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-10 22:53:35,662][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-10 22:53:35,907][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-10 22:54:16,718][core.load][INFO] >>> ETL Crypto Transaction Data from API
+[2025-01-10 22:54:16,718][core.load][INFO] >>> Inquire "UPBIT CANDLE" Data
+[2025-01-10 22:58:40,105][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-10 22:58:40,108][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-10 22:58:40,315][core.load][INFO] >>> Inquire "UPBIT TRADE" Data
+[2025-01-10 22:58:40,325][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-10 22:58:40,325][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-10 22:58:40,453][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-10 22:58:40,466][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-10 22:58:40,484][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-10 22:58:40,484][core.preprocess][INFO] >>> Create derieved features
+[2025-01-10 22:58:40,504][core.preprocess][INFO] >>> Load preprocessed result to database.
+[2025-01-10 22:58:40,711][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-10 22:58:40,722][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-10 22:58:40,722][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-10 22:58:40,774][core.preprocess][INFO] >>> Load scaled dataset to database.
+[2025-01-10 22:58:40,988][core.train][INFO] >>> Read train dataset
+[2025-01-10 22:58:41,204][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-10 22:58:41,369][trainer.train][INFO] >>> 🧪 Experiment crypto_forecast is not Exist.             Create Experiment.
+[2025-01-10 22:58:41,780][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: 2fe99c0238e341b8b0b3dcb804521dd6
+[2025-01-10 23:01:22,859][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-10 23:01:22,871][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-10 23:01:22,888][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-10 23:01:22,888][core.preprocess][INFO] >>> Create derieved features
+[2025-01-10 23:01:22,909][core.preprocess][INFO] >>> Load preprocessed result to database.
+[2025-01-10 23:01:23,110][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-10 23:01:23,122][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-10 23:01:23,122][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-10 23:01:23,171][core.preprocess][INFO] >>> Load scaled dataset to database.
+[2025-01-10 23:01:23,441][core.train][INFO] >>> Read train dataset
+[2025-01-10 23:01:23,656][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-10 23:01:23,818][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.             Execute Run on the "crypto_forecast".
+[2025-01-10 23:01:23,959][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: 3c5c7f3d06ae4f13aec456f7b7e3c663
+[2025-01-10 23:03:46,821][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-10 23:03:46,833][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-10 23:03:46,849][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-10 23:03:46,849][core.preprocess][INFO] >>> Create derieved features
+[2025-01-10 23:03:46,871][core.preprocess][INFO] >>> Load preprocessed result to database.
+[2025-01-10 23:03:47,076][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-10 23:03:47,088][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-10 23:03:47,088][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-10 23:03:47,139][core.preprocess][INFO] >>> Load scaled dataset to database.
+[2025-01-10 23:03:47,402][core.train][INFO] >>> Read train dataset
+[2025-01-10 23:03:47,635][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-10 23:03:47,786][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.             Execute Run on the "crypto_forecast".
+[2025-01-10 23:03:47,925][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: 44ad1624275a441bb816b01339440c60
+[2025-01-10 23:09:06,528][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-10 23:09:06,541][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-10 23:09:06,557][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-10 23:09:06,557][core.preprocess][INFO] >>> Create derieved features
+[2025-01-10 23:09:06,577][core.preprocess][INFO] >>> Load preprocessed result to database.
+[2025-01-10 23:09:06,789][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-10 23:09:06,802][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-10 23:09:06,802][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-10 23:09:06,852][core.preprocess][INFO] >>> Load scaled dataset to database.
+[2025-01-10 23:09:07,104][core.train][INFO] >>> Read train dataset
+[2025-01-10 23:09:07,341][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-10 23:09:07,490][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.             Execute Run on the "crypto_forecast".
+[2025-01-10 23:09:07,629][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: df2a7a0df8814e47a54706c9b178d3c7
+[2025-01-10 23:09:50,123][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: f664d76f676a4bbe8bfbec434ac798cb
+[2025-01-10 23:10:32,007][core.evaluate][INFO] >>> Read test dataset
+[2025-01-10 23:10:32,046][core.evaluate][INFO] >>> Apply sliding window to test data
+[2025-01-10 23:10:32,061][core.evaluate][INFO] >>> Load Scaler Object
+[2025-01-10 23:11:25,298][core.evaluate][INFO] >>> Read test dataset
+[2025-01-10 23:11:25,320][core.evaluate][INFO] >>> Apply sliding window to test data
+[2025-01-10 23:11:25,336][core.evaluate][INFO] >>> Load Scaler Object
+[2025-01-10 23:11:25,374][core.evaluate][INFO] >>> Initialize model evaluating (Nested)
+[2025-01-11 22:42:26,987][core.train][INFO] >>> Read train dataset
+[2025-01-11 22:42:27,233][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-11 22:42:27,394][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.             Execute Run on the "crypto_forecast".
+[2025-01-11 22:42:27,535][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: e0ca6386afdb44029e8b6aa4738f0be9
+[2025-01-11 22:45:06,483][core.train][INFO] >>> Read train dataset
+[2025-01-11 22:45:06,717][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-11 22:45:06,855][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.             Execute Run on the "crypto_forecast".
+[2025-01-11 22:45:06,971][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: 20c81859ebdb4354be59301b747af268
+[2025-01-11 22:45:51,196][core.train][INFO] >>> Read train dataset
+[2025-01-11 22:45:51,425][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-11 22:45:51,568][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.             Execute Run on the "crypto_forecast".
+[2025-01-11 22:45:51,692][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: 5e282ec555db467c8c13f59e43b996a6
+[2025-01-11 22:46:20,613][core.train][INFO] >>> Read train dataset
+[2025-01-11 22:46:20,904][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-11 22:46:21,048][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.             Execute Run on the "crypto_forecast".
+[2025-01-11 22:46:21,176][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: bd68afa5b4414b319db65ec5985d8b45
+[2025-01-11 22:47:08,144][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: fc1754592cb244d29d35e210a5d6f90d
+[2025-01-11 22:47:52,826][core.evaluate][INFO] >>> Read test dataset
+[2025-01-11 22:47:52,865][core.evaluate][INFO] >>> Apply sliding window to test data
+[2025-01-11 22:47:52,882][core.evaluate][INFO] >>> Load Scaler Object
+[2025-01-11 22:47:52,910][core.evaluate][INFO] >>> Initialize model evaluating (Nested)
+[2025-01-11 23:17:48,755][core.load][INFO] >>> ETL Crypto Transaction Data from API
+[2025-01-11 23:17:48,755][core.load][INFO] >>> Inquire "UPBIT CANDLE" Data
+[2025-01-11 23:20:09,219][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-11 23:20:09,222][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-11 23:20:09,438][core.load][INFO] >>> Inquire "UPBIT TRADE" Data
+[2025-01-11 23:20:09,448][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-11 23:20:09,449][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-11 23:20:09,586][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-11 23:20:09,599][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-11 23:20:09,616][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-11 23:20:09,616][core.preprocess][INFO] >>> Create derieved features
+[2025-01-11 23:20:09,635][core.preprocess][INFO] >>> Load preprocessed result to database.
+[2025-01-11 23:20:09,841][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-11 23:20:09,854][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-11 23:20:09,854][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-11 23:20:09,908][core.preprocess][INFO] >>> Load scaled dataset to database.
+[2025-01-11 23:20:10,111][core.train][INFO] >>> Read train dataset
+[2025-01-11 23:20:10,339][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-11 23:20:10,494][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.             Execute Run on the "crypto_forecast".
+[2025-01-11 23:20:10,639][core.train][INFO] >>> Initialize model training | Exp: crypto_forecast | Run: 686f992c3c2c491bbc7633a18d2ab8f0
+[2025-01-11 23:20:55,752][core.evaluate][INFO] >>> Read test dataset
+[2025-01-11 23:20:55,791][core.evaluate][INFO] >>> Apply sliding window to test data
+[2025-01-11 23:20:55,808][core.evaluate][INFO] >>> Load Scaler Object
+[2025-01-11 23:20:55,844][core.evaluate][INFO] >>> Initialize model evaluating (Nested)

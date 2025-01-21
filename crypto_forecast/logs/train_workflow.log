@@ -157,3 +157,54 @@
 [2025-01-11 23:20:55,791][core.evaluate][INFO] >>> Apply sliding window to test data
 [2025-01-11 23:20:55,808][core.evaluate][INFO] >>> Load Scaler Object
 [2025-01-11 23:20:55,844][core.evaluate][INFO] >>> Initialize model evaluating (Nested)
+[2025-01-18 00:13:55,616][core.load][INFO] >>> ETL Crypto Transaction Data from API.
+[2025-01-18 00:13:55,616][core.load][INFO] >>> Inquire "UPBIT CANDLE" Data.
+[2025-01-18 00:13:55,617][core.load][INFO] >>> Table not exists. Request KRW-BTC data from 2024-11-01 00:00:00 to 2025-01-18 00:13:55.617382.
+[2025-01-18 00:15:52,074][core.load][INFO] >>> Table not exists. Request BTC-ETH data from 2024-11-01 00:00:00 to 2025-01-18 00:15:52.074747.
+[2025-01-18 00:16:02,507][core.load][INFO] >>> Table not exists. Request BTC-XRP data from 2024-11-01 00:00:00 to 2025-01-18 00:16:02.507585.
+[2025-01-18 00:16:25,562][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-18 00:16:25,593][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-18 00:16:26,688][core.load][INFO] >>> Drop duplicate rows
+[2025-01-18 00:16:27,422][core.load][INFO] >>> Inquire "UPBIT TRADE" Data.
+[2025-01-18 00:16:27,472][core.load][INFO] >>> Trade Data not activated current version.
+[2025-01-18 00:16:27,472][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-18 00:16:27,498][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-18 00:16:27,557][core.load][INFO] >>> Drop duplicate rows
+[2025-01-18 00:16:52,760][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-18 00:16:52,820][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-18 00:16:52,885][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-18 00:16:52,885][core.preprocess][INFO] >>> Create derieved features
+[2025-01-18 00:16:53,121][core.preprocess][INFO] >>> Insert preprocessed result to database.
+[2025-01-18 00:16:55,389][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-18 00:16:55,444][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-18 00:16:55,444][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-18 00:16:55,700][core.preprocess][INFO] >>> Append scaled dataset to database.
+[2025-01-18 00:17:16,163][core.train][INFO] >>> Read train dataset
+[2025-01-18 00:17:16,910][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-18 00:17:18,241][trainer.train][INFO] >>> 🧪 Experienmt crypto_forecast is Already Exist.             Execute Run on the "crypto_forecast".
+[2025-01-18 00:20:06,846][core.train][INFO] >>> Read train dataset
+[2025-01-18 00:20:07,788][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-18 00:20:09,810][trainer.train][INFO] >>> 🧪 Experiment crypto_forecast is not Exist.             Create Experiment.
+[2025-01-18 00:20:10,988][core.train][INFO] >>> Hyperparameter Optimization
+[2025-01-18 00:20:11,124][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: 09ef80d8a43a48eebd15963e73d40719
+[2025-01-18 00:22:50,784][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: ea0a2c4c9f0541649d8ba45546f941f0
+[2025-01-18 00:25:50,966][core.evaluate][INFO] >>> Load Scaler Object
+[2025-01-18 00:25:50,967][core.evaluate][INFO] >>> Read test dataset
+[2025-01-18 00:25:51,122][core.evaluate][INFO] >>> Apply sliding window to test data
+[2025-01-18 00:25:51,435][core.evaluate][INFO] >>> Evaluate trained model | Exp: crypto_forecast | Run: 09ef80d8a43a48eebd15963e73d40719
+[2025-01-18 00:26:06,665][core.evaluate][INFO] >>> Inverse transformation for predicted result
+[2025-01-18 00:26:08,695][core.evaluate][INFO] >>> Logging model performence
+[2025-01-18 00:26:09,706][core.evaluate][INFO] >>> Evaluate trained model | Exp: crypto_forecast | Run: ea0a2c4c9f0541649d8ba45546f941f0
+[2025-01-18 00:26:23,860][core.evaluate][INFO] >>> Inverse transformation for predicted result
+[2025-01-18 00:26:26,175][core.evaluate][INFO] >>> Logging model performence
+[2025-01-18 00:26:42,132][core.inference][INFO] >>> Load Scaler Object
+[2025-01-18 00:26:42,402][core.inference][INFO] >>> Apply sliding window to inference data
+[2025-01-18 00:26:42,411][core.inference][INFO] >>> Search latest production model ...
+[2025-01-18 00:35:26,317][core.inference][INFO] >>> Load Scaler Object
+[2025-01-18 00:35:26,331][core.inference][INFO] >>> Apply sliding window to inference data
+[2025-01-18 00:35:26,339][core.inference][INFO] >>> Search latest production model ...
+[2025-01-18 00:35:26,581][core.inference][INFO] >>> Load model | Name: CryptoForcast_GRU | Ver: 1
+[2025-01-18 00:35:26,660][core.inference][INFO] >>> Predict for latest data
+[2025-01-18 00:35:27,602][core.inference][INFO] >>> Post process prediction result
+[2025-01-18 00:35:27,606][core.inference][INFO] >>> Inference from 2025-01-18 00:28:00 to 2025-01-18 01:28:00
+[2025-01-18 00:35:27,607][core.inference][INFO] >>> Insert prediction result to table| Table: dw_svc_crypto_transc_candle_upbit_prediction
