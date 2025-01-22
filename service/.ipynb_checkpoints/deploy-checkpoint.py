@@ -46,7 +46,7 @@ class Deploy:
             
             current_model_info = tracking_run(
                 experiment_id = exp_id,
-                run_id = current_model['RUN_ID']
+                run_id = current_model['run_id']
             ).pop()
             
             new_model_info = tracking_run(
@@ -55,7 +55,7 @@ class Deploy:
             ).pop()
             
             if new_model_info['metrics.RMSE'] < current_model_info['metrics.RMSE']:
-                print("NEW MODEL performance is better. Replace model for serving.")
+                print("New model performance is better. REPLACE model for serving.")
                 registered_model_info = register_model_by_run_id(
                     run_id = best_run['run_id'],
                     model_name = self.cfg_meta.register_model_name
@@ -70,7 +70,7 @@ class Deploy:
                 UPDATE_DATABASE = True
                 
             else:
-                print("CURRENT MODEL performance is better. Maintain model for serving.")
+                print("Current model performance is better. MAINTAIN model for serving.")
                 
         else:
             # 기존에 등록된 모델 없음

@@ -20,8 +20,9 @@ from compose.services import CfgMLFlow, CfgSlack
 from compose.crypto_forecast import CfgMeta, CfgDatabase
 from messenger.message import AirflowMessenger
 
-# objects
 mlflow.set_tracking_uri(CfgMLFlow.server_url)
+
+# objects
 runner = Run(CfgMeta.config)
 messenger = AirflowMessenger(CfgSlack)
 deployer = Deploy(CfgMeta, CfgDatabase)
@@ -32,7 +33,7 @@ DEFAULT_ARGS = {
     'owner': 'Changsun',
     'depends_on_past': True,
     'retries': 1,
-    'retry_delay': timedelta(minutes=2),
+    'retry_delay': timedelta(minutes=1),
     'on_failure_callback': messenger.send_failure_task_info_message
 }
 
@@ -81,4 +82,3 @@ with DAG(
     )
 
     loader >> preprocessor >> trainer >> evaluator >> deployor >> messenger
-    

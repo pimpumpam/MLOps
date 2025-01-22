@@ -49,12 +49,11 @@ def get_dags_block(dag_name):
         .first()
     )
     
-    section = "*⚙️ DAGs INFO* ⚙️ \n"
+    section = "*⚙️ DAGs Information* ⚙️ \n"
     section += (
         f"\t- Name: {dags.dag_id} \n"
         f"\t- State: {dags.state.upper() if dags.state=='failed' else dags.state} \n"
         f"\t- Start Time: {datetime.strftime(dags.start_date, '%Y-%m-%d %H:%M:%S')} \n"
-#         f"\t- End Time: {datetime.strftime(dags.end_date, '%Y-%m-%d %H:%M:%S')} \n"
     )
     
     session.close()
@@ -97,7 +96,6 @@ def get_tasks_info(dag_name):
         task_info['name'] = task.task_id
         task_info['state'] = task.state.upper() if task.state=='failed' else task.state
         task_info['execution_time'] = datetime.strftime(task.start_date, '%Y-%m-%d %H:%M:%S')
-#         task_info['end_time'] = datetime.strftime(task.end_date, '%Y-%m-%d %H:%M:%S')
         task_info['duration'] = round(task.duration, 2) if task.duration is not None else 0
         task_info['log_info'] = f"{AIRFLOW_SERVER_URL}/log?{task.log_url.split('log?')[-1]}"
         
@@ -111,7 +109,7 @@ def get_tasks_info(dag_name):
 def get_task_block(task):
     
     """
-    Task 정보에 대한 slcak block 텍스트 생성
+    단일 Task 정보에 대한 slcak block 텍스트 생성
     
     parameter
     ----------
@@ -122,7 +120,7 @@ def get_task_block(task):
     
     """
     
-    section = "*🗂️ Task Info* \n"
+    section = "*🗂️ Task Information 🗂️* \n"
     
     for key, val in task.items():
         section += f"\t- {key}: {val} \n"
@@ -147,7 +145,7 @@ def get_tasks_block(tasks):
     
     section = [
         SectionBlock(
-            text=MarkdownTextObject(text="*🗂️ TASKs INFO 🗂️*")
+            text=MarkdownTextObject(text="*🗂️ Tasks Information 🗂️*")
         )
     ]
     
@@ -159,11 +157,10 @@ def get_tasks_block(tasks):
             continue
         
         block = (
-            f"*📂 Task No.{idx+1}* \n"
+            f"*Task No.{idx+1}* \n"
             f"\t - Name: {task['name']} \n"
             f"\t - State: {task['state']} \n"
             f"\t - Execution Time: {task['execution_time']} \n"
-#             f"\t - End Time: {task['end_time']} \n"
             f"\t - Duration: {task['duration']}s \n"
             f"\t - Log History: <{task['log_info']}|View Logs> \n"
         )

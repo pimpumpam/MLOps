@@ -63,13 +63,13 @@ def tracking_latest_model(model_name):
     latest_version_info = dict(model_info['latest_versions'][-1])
     
     model_info_dict = {
-        'NAME': model_info['name'],
-        'VERSION': latest_version_info['version'],
-        'CREATION_TIME': timestamp_to_datetime(model_info['creation_timestamp']/1000),
-        'LATEST_UPDATE_TIME': timestamp_to_datetime(latest_version_info['last_updated_timestamp']/1000),
-        'RUN_ID': latest_version_info['run_id'],
-        'STAGE': latest_version_info['current_stage'],
-        'SOURCE': latest_version_info['source']
+        'name': model_info['name'],
+        'version': latest_version_info['version'],
+        'creation_time': timestamp_to_datetime(model_info['creation_timestamp']/1000),
+        'latest_update_time': timestamp_to_datetime(latest_version_info['last_updated_timestamp']/1000),
+        'run_id': latest_version_info['run_id'],
+        'stage': latest_version_info['current_stage'],
+        'source': latest_version_info['source']
     }
     
     return model_info_dict

@@ -22,9 +22,9 @@ from compose.services import CfgMLFlow, CfgSlack
 from compose.crypto_forecast import CfgMeta, CfgDatabase
 from messenger.message import AirflowMessenger
 
+mlflow.set_tracking_uri(CfgMLFlow.server_url)
 
 # objects
-mlflow.set_tracking_uri(CfgMLFlow.server_url)
 runner = Run(CfgMeta.config)
 messenger = AirflowMessenger(CfgSlack)
 
@@ -38,9 +38,6 @@ DEFAULT_ARGS = {
     'on_failure_callback': messenger.send_failure_task_info_message
 }
 
-
-# def task_that_fails():
-#     raise ValueError("This task is set to fail!")
 
 def branch_task(ti):
     status = ti.xcom_pull(task_ids='monitor')
@@ -57,16 +54,10 @@ with DAG(
     default_args=DEFAULT_ARGS,
     description="Monitoring Crypto Forecast Model",
     start_date=pendulum.datetime(2025, 1, 8, tz="Asia/Seoul"),
-    schedule_interval='5 * * * * ',
+    schedule_interval='5 * * * * ', # 분(0~59) 시(0~23) 일(1~31) 월(1~12) 요일(0~6, 0:일요일)
     catchup=False,
     tags=['Toy Project using Crypto Transc Data']
 ) as dag:
-    
-    
-#     tester = PythonOperator(
-#         task_id = 'tester',
-#         python_callable = task_that_fails
-#     )
     
     monitor = PythonOperator(
         task_id = 'monitor',
@@ -74,7 +65,7 @@ with DAG(
     )
     
     branch = BranchPythonOperator(
-        task_id = 'branch_update_model',
+        task_id = 'monitoring_branch',
         python_callable = branch_task,
         provide_context=True
     )
@@ -90,4 +81,13 @@ with DAG(
         bash_command = 'echo "Maintain Current Model"'
     )
     
-    monitor >> branch >> [train_workflow, complete]
+    messenger = PythonOperator(
+        task_id='slack_messenger',
+        python_callable=messenger.send_whole_task_info_message,
+        op_args=[DAG_NAME],
+        trigger_rule=TriggerRule.ONE_SUCCESS
+    )
+    
+#     monitor >> branch >> [train_workflow, complete] >> messenger
+    monitor >> branch >> train_workflow >> messenger
+    monitor >> branch >> complete >> messenger

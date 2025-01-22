@@ -82,7 +82,6 @@ class Evaluator:
             time_col = 'KST_TIME'
         )
         
-        
         # [ EVALUATE ]
         # evaluate trained model
         for run_id in RUN_IDs:
@@ -114,7 +113,6 @@ class Evaluator:
                 
                 pred = pd.DataFrame(pred, columns=self.cfg_evaluate.field['label'])
                 truth = pd.DataFrame(truth, columns=self.cfg_evaluate.field['label'])
-                
                 
                 scaler.inverse_transform(
                     data=pred,

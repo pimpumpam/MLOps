@@ -26,9 +26,10 @@ DEFAULT_ARGS = {
     'owner': 'Changsun',
     'depends_on_past': False,
     'retries': 1,
-    'retry_delay': timedelta(minutes=2),
-    'on_failure_callback': messenger.send_failure_task_info_message
+    'retry_delay': timedelta(minutes=1),
+    'on_failure_callback': messenger.send_failure_task_info_message 
 }
+
 
 # dags
 with DAG(
@@ -36,7 +37,7 @@ with DAG(
     default_args=DEFAULT_ARGS,
     description="Request Crypto Transc Data",
     start_date=pendulum.datetime(2025, 1, 8, tz="Asia/Seoul"),
-    schedule_interval='0 * * * *', # '분(0~59) 시(0~23) 일(1~31) 월(1~12) 요일(0~6, 0:일요일)' 순으로 설정
+    schedule_interval='0 * * * *', # 분(0~59) 시(0~23) 일(1~31) 월(1~12) 요일(0~6, 0:일요일)
     catchup=False,
     tags=['Toy Project using Crypto Transc Data']
 ) as dag:

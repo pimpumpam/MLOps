@@ -16,7 +16,7 @@ class AirflowMessenger:
         
         # header
         header_block = get_header_block(
-            header_text = "*🚨 Alert 🚨*\nTask Failure Details During Workflow Execution Scheduled in *Airflow*"
+            header_text = "*🚨 ALERT 🚨*\nTask Failure Details During Workflow Execution Scheduled in *Airflow*"
         )
         
         # task info
@@ -49,7 +49,7 @@ class AirflowMessenger:
         
         # header
         header_block = get_header_block(
-            header_text = "*📢 Notification 📢*\nThis is the Execution Result History of the Workflows Scheduled in *Airflow*"
+            header_text = "*📢 NOTIFICATION 📢*\nThis is the Execution Result History of the Workflows Scheduled in *Airflow*"
         )
         
         # dags info
