@@ -1,11 +1,9 @@
 class CfgMLFlow:
-    server_url = "http://192.168.150.103:8334"
+    server_url = "서버URL:포트번호"
 
 class CfgAirFlow:
-    server_url = "http://192.168.150.103:8337"
-    dags_dir = "/data1/MLOps/Airflow/MLOps/dags"
+    server_url = "서버URL:포트번호"
+    dags_dir = "프로젝트상위경로/MLOps/dags"
     
 class CfgSlack:
-    slack_webhook_url = "https://hooks.slack.com/services/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"
-    # mlflow_webhook_url = "" # slack api 내 webhook 생성 부분에서 채널 웹훅 생성 시 발급 되는 url 주소 복붙
-    # airflow_webhook_url = "" # slack api 내 webhook 생성 부분에서 채널 웹훅 생성 시 발급 되는 url 주소 복붙
+    slack_webhook_url = "SlackAPI에서발급받은webhookURL"

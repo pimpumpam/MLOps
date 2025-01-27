@@ -1,6 +1,6 @@
 class CfgMeta:
     experiment_name = "crypto_forecast"
-    experiment_dir = '/data1/MLOps/AirFlow/MLOps/crypto_forecast'
+    experiment_dir = '프로젝트상위경로/MLOps/crypto_forecast'
     
     config = 'dlinear'
     register_model_name = 'CryptoForcast_GRU'
@@ -8,7 +8,7 @@ class CfgMeta:
     
 class CfgDatabase:
     engine = 'Sqlite3'
-    database_dir = '/data1/MLOps/AirFlow/MLOps/crypto_forecast/crypto.db'
+    database_dir = '/프로젝트상위경로/MLOps/crypto_forecast/crypto.db'
     register_model = {
         'scheme': 'dw_model',
         'table': 'registred_model',
