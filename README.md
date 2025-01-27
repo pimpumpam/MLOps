@@ -13,8 +13,11 @@
 
 ### 1.2. Project
   - configs: 프로젝트의 필요 설정 값들을 관리하는 파일로 구성.
-  - core: Task 단위로 구분된 파일로 구성. 각 task에 필요한 기능들은 함수 형태로 task와 유사한 이름의 폴더에서 관리.<br><pre>Ex) prj_name/core/train.py에서 필요한 기능 및 함수는 prj_name/core/trainer 폴더에 구성</pre>
-  - loader, preprocessor, trainer, evaluator: core 내 task에 필요한 기능으로 구성된 파일. class는 사용하지 않고 단일 함수로 작성. 함수명이 중복되지 않게 주의.
+  - core: Task 단위로 구분된 파일로 구성. 각 task에 필요한 기능들은 함수 형태로 task와 유사한 이름의 폴더에서 관리.
+  - loader: core 내 load.py 파일의 필요한 기능으로 구성된 파일. class는 사용하지 않고 단일 함수로 작성. 함수명이 중복되지 않게 주의.
+  - preprocessor: core 내 preprocess.py 파일의 필요한 기능으로 구성된 파일. class는 사용하지 않고 단일 함수로 작성. 함수명이 중복되지 않게 주의.
+  - trainer: core 내 train.py 파일의 필요한 기능으로 구성된 파일. class는 사용하지 않고 단일 함수로 작성. 함수명이 중복되지 않게 주의.
+  - evaluator: core 내 evaluate.py 파일의 필요한 기능으로 구성된 파일. class는 사용하지 않고 단일 함수로 작성. 함수명이 중복되지 않게 주의.
   - logs: Task 실행 시 기록되는 log 파일 저장 경로
-  - static: 자주 변경되지 않는 처리된 산출물. 실행 및 배포 시 일관성과 재현성을 보장하기 위한 파일.
+  - static: 자주 변경되지 않는 처리된 산출물 저장 경로. 실행 및 배포 시 일관성과 재현성을 보장하기 위한 파일.
   - run.py: core의 각 task를 호출하여 단계별로 실행하는 최종 실행 파일.
