@@ -3,26 +3,26 @@ class CfgMeta:
     exp_name = 'crypto_forecast'
     model_name = 'CryptoForcast_GRU'
     project = {
-        'STATIC_DIR': '/data1/MLOps/AirFlow/MLOps/crypto_forecast/static'
+        'STATIC_DIR': '/프로젝트상위경로/MLOps/crypto_forecast/static'
     }
     
     mlflow = {
-        'DASHBOARD_URL': 'http://192.168.150.103:8334',
-        'DATABASE_DIR': '/data1/MLOps/MLFlow/mlflow.db',
-        'ARTIFACT_DIR': '/data1/MLOps/AirFlow/MLOps/artifacts'
+        'DASHBOARD_URL': 'http://서버URL:포트번호',
+        'DATABASE_DIR': '/프로젝트상위경로/MLOps/mlflow.db',
+        'ARTIFACT_DIR': '/프로젝트상위경로/MLOps/artifacts'
     }
     
     s3 = {
-        'STORAGE_URL': 'http://192.168.80.6:10080',
-        'ARTIFACT_DIR': 's3://ndap-test-public/Toby/MLFlow/Ecommerce',
-        'ACCESS_KEY': 'IAQ2BQ1EJKO326CIT445',
-        'SECRET_KEY': 'GRmUYDfsam48pHUyXVPARRRKbjon9UyEEuhQyqYJ',
-        'BUCKET_NAME': 'ndap-test-public'
+        'STORAGE_URL': 'http://서버URL:포트번호',
+        'ARTIFACT_DIR': 's3://버킷이름/저장경로',
+        'ACCESS_KEY': 'Credential접근키',
+        'SECRET_KEY': 'Credential비밀키',
+        'BUCKET_NAME': '버킷이름'
     }
     
 class CfgDatabase:
     engine = 'Sqlite3'
-    database_dir = '/data1/MLOps/AirFlow/MLOps/crypto_forecast/crypto.db'
+    database_dir = '/프로젝트상위경로/MLOps/crypto_forecast/crypto.db'
     bronze = {
         'CANDLE' : {
             'params': {},
@@ -136,12 +136,12 @@ class CfgPreprocessor:
     transform = {
         'SCALER': {
             'name': 'MinMaxScaler',
-            'save_dir' : '/data1/MLOps/AirFlow/MLOps/crypto_forecast/static',
+            'save_dir' : '/프로젝트상위경로/MLOps/crypto_forecast/static',
             'save_name': 'candle_scaler'
         },
         'ENCODER': {
             'name': 'sklearn.preprocessing.LabelEncoder',
-            'save_dir' : '/Users/pimpumpam/my_Python/MLOps/crypto_forecast/static',
+            'save_dir' : '/프로젝트상위경로/MLOps/crypto_forecast/static',
             'save_name': 'candle_encoder'
         }
     }
