@@ -123,10 +123,6 @@ def split_sliding_window(data, feature_col, input_seq_len, label_seq_len, **kwar
     # set sequence length
     seq_len = input_seq_len + label_seq_len
     
-    import numpy as np
-    print(np.shape(data_arr))
-    print(seq_len)
-    
     # apply sliding window
     window_data = sliding_window_view(data_arr, (seq_len,), axis=0).transpose(0, 2, 1)
 

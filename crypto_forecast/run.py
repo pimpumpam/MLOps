@@ -99,17 +99,17 @@ if __name__ == "__main__":
     runner = Run(args.config)   
 
     # loading
-#     runner.load() 
+    runner.load() 
 
     # preprocessing
-#     runner.preprocess()
+    runner.preprocess()
 
     # training
-#     runner.train() 
+    runner.train() 
     
     # evaluating
-#     runner.evaluate()  
+    runner.evaluate()  
 
     # inferencing
-    runner.inference()
+    #runner.inference()
     

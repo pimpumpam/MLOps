@@ -208,3 +208,40 @@
 [2025-01-18 00:35:27,602][core.inference][INFO] >>> Post process prediction result
 [2025-01-18 00:35:27,606][core.inference][INFO] >>> Inference from 2025-01-18 00:28:00 to 2025-01-18 01:28:00
 [2025-01-18 00:35:27,607][core.inference][INFO] >>> Insert prediction result to table| Table: dw_svc_crypto_transc_candle_upbit_prediction
+[2025-01-27 20:48:28,677][core.load][INFO] >>> ETL Crypto Transaction Data from API.
+[2025-01-27 20:48:28,678][core.load][INFO] >>> Inquire "UPBIT CANDLE" Data.
+[2025-01-27 20:48:28,679][core.load][INFO] >>> Table not exists. Request KRW-BTC data from 2024-11-01 00:00:00 to 2025-01-27 20:48:28.679076.
+[2025-01-27 20:50:37,890][core.load][INFO] >>> Table not exists. Request BTC-ETH data from 2024-11-01 00:00:00 to 2025-01-27 20:50:37.890911.
+[2025-01-27 20:50:49,343][core.load][INFO] >>> Table not exists. Request BTC-XRP data from 2024-11-01 00:00:00 to 2025-01-27 20:50:49.343083.
+[2025-01-27 20:51:12,278][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-27 20:51:12,313][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_candle_upbit_minutes"
+[2025-01-27 20:51:13,399][core.load][INFO] >>> Drop duplicate rows
+[2025-01-27 20:51:14,209][core.load][INFO] >>> Inquire "UPBIT TRADE" Data.
+[2025-01-27 20:51:14,286][core.load][INFO] >>> Trade Data not activated current version.
+[2025-01-27 20:51:14,286][core.load][INFO] >>> Create Table as "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-27 20:51:14,313][core.load][INFO] >>> Insert Data into "dw_brz_crypto_transc_recent_trade_upbit"
+[2025-01-27 20:51:14,379][core.load][INFO] >>> Drop duplicate rows
+[2025-01-27 20:51:14,956][core.preprocess][INFO] >>> Data have at least one missing timestamp or more. Fill missing timestamp
+[2025-01-27 20:51:15,005][core.preprocess][INFO] >>> Data have at least one missing values or more. Fill missing values
+[2025-01-27 20:51:15,069][core.preprocess][INFO] >>> Data is clean. Any duplicated value has been detected.
+[2025-01-27 20:51:15,070][core.preprocess][INFO] >>> Create derieved features
+[2025-01-27 20:51:15,236][core.preprocess][INFO] >>> Insert preprocessed result to database.
+[2025-01-27 20:51:17,704][core.preprocess][INFO] >>> Apply scaler to data
+[2025-01-27 20:51:17,746][preprocessor.transformation][INFO] >>> Complete save "MinMaxScaler"
+[2025-01-27 20:51:17,747][core.preprocess][INFO] >>> Split data as train and test sets
+[2025-01-27 20:51:17,951][core.preprocess][INFO] >>> Append scaled dataset to database.
+[2025-01-27 20:51:19,728][core.train][INFO] >>> Read train dataset
+[2025-01-27 20:51:20,590][core.train][INFO] >>> Apply sliding window to train data
+[2025-01-27 20:51:22,095][trainer.train][INFO] >>> 🧪 Experiment crypto_forecast is not Exist.             Create Experiment.
+[2025-01-27 20:51:22,369][core.train][INFO] >>> Hyperparameter Optimization
+[2025-01-27 20:51:22,479][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: d297591cc89646a7b6751298c22bb3b7
+[2025-01-27 20:53:59,532][core.train][INFO] >>> Initialize model training (Nested) | Exp: crypto_forecast | Run: 0bafb774f7f343a8ba4fe3607779ec3e
+[2025-01-27 20:56:34,508][core.evaluate][INFO] >>> Load Scaler Object
+[2025-01-27 20:56:34,509][core.evaluate][INFO] >>> Read test dataset
+[2025-01-27 20:56:34,874][core.evaluate][INFO] >>> Apply sliding window to test data
+[2025-01-27 20:56:35,250][core.evaluate][INFO] >>> Evaluate trained model | Exp: crypto_forecast | Run: d297591cc89646a7b6751298c22bb3b7
+[2025-01-27 20:56:58,124][core.evaluate][INFO] >>> Inverse transformation for predicted result
+[2025-01-27 20:57:01,073][core.evaluate][INFO] >>> Logging model performence
+[2025-01-27 20:57:01,699][core.evaluate][INFO] >>> Evaluate trained model | Exp: crypto_forecast | Run: 0bafb774f7f343a8ba4fe3607779ec3e
+[2025-01-27 20:57:23,003][core.evaluate][INFO] >>> Inverse transformation for predicted result
+[2025-01-27 20:57:26,074][core.evaluate][INFO] >>> Logging model performence

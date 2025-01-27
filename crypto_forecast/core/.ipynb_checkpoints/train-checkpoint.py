@@ -40,7 +40,6 @@ class Trainer:
         RUN_IDs = collections.defaultdict(list)
         
         LOGGER.info("Read train dataset")
-        print("Read Train Dataset")
         train_data = self.db_manager.fetch_to_dataframe(
             f"""
             SELECT *
