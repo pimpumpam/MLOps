@@ -38,7 +38,7 @@
    
 3. **dags**
    - Apache Airflow 기반 workflow 파일들로 구성 된 폴더 입니다.
-   - 파일명은 <u>*"프로젝트명_구분값_wf.py"*</u>로 설정 합니다.
+   - 파일명은 <u>*"[프로젝트명]_[구분값]_wf.py"*</u>로 설정 합니다.
    
 4. **db_handler**
    - 데이터, workflow의 결과 등 메타 정보들을 처리하기 위한 기능으로 구성 된 폴더 입니다.
@@ -51,7 +51,7 @@
    
 7. **crypto_forecast**
    - 주제 별 프로젝트 폴더 입니다.
-   - 추가 프로젝트 생성 시 Root 디렉토리 내 폴더 생성 후 <u>*"프로젝트 가이드라인"*</u>에 따라 작업을 수행합니다.
+   - 추가 프로젝트 생성 시 `/root` 디렉토리 내 폴더 생성 후 <u>*"프로젝트 가이드라인"*</u>에 따라 작업을 수행합니다.
 
   
 ## 프로젝트 가이드라인
@@ -60,23 +60,24 @@
 
 1. **configs**
    - 데이터, 모델, 하이퍼파라미터 등 설정 값으로 구성 된 파일이 있는 폴더 입니다.
-   - class로 구성하며 `utils.utils.py`의 `load_spec_from_config` 함수에 해당 파일 내 모든 class를 등록합니다.
+   - class로 구성하며 `/utils.utils.py`의 `load_spec_from_config` 함수에 해당 파일 내 모든 class를 등록합니다.
    
 2. **core**
    - Task 단위로 구분된 파일들로 구성 된 폴더 입니다.
-   - `core/load.py`는 `loader/load.py` 내 함수들을 호출하여 데이터를 불러오는 기능을 수행합니다.
-   - `core/preprocess.py`는 `preprocessor/data_preparation.py`, `preprocessor/preprocess.py`, `preprocessor/feature_engineering.py`, `preprocessor/transformation.py` 내 함수들을 호출하여 데이터를 전처리하는 기능을 수행합니다.
-   - `core/train.py`는 `trainer/train.py` 내 함수들을 호출하여 모델을 학습하는 기능을 수행합니다.
-   - `core/evaluate.py`는 `evaluator/evaluate.py` 내 함수들을 호출하여 학습 된 모델을 평가하는 기능을 수행합니다.
-   - `core/inference.py`는 학습 된 모델을 활용하여 새로 적재 된 데이터에 대해 예측을 수행합니다.
+   - `/core/load.py`는 `/loader/load.py` 내 함수들을 호출하여 데이터를 불러오는 기능을 수행합니다.
+   - `/core/preprocess.py`는 `/preprocessor/data_preparation.py`, `/preprocessor/preprocess.py`, `preprocessor/feature_engineering.py`, `/preprocessor/transformation.py` 내 함수들을 호출하여 데이터를 전처리하는 기능을 수행합니다.
+   - `/core/train.py`는 `/trainer/train.py` 내 함수들을 호출하여 모델을 학습하는 기능을 수행합니다.
+   - `/core/evaluate.py`는 `/evaluator/evaluate.py` 내 함수들을 호출하여 학습 된 모델을 평가하는 기능을 수행합니다.
+   - `/core/inference.py`는 학습 된 모델을 활용하여 새로 적재 된 데이터에 대해 예측을 수행합니다.
    
 3. **utils**
    - 프로젝트 내 공통적으로 사용되는 함수들을 작성합니다.
    - `load_spec_from_config` 함수는 필수입니다.
 
 4. **run.py**
-   - `core` 내 각 task들을 호출하여 단계별로 각 과정을 수행하는 실행 파일입니다.
+   - `/core` 내 각 task들을 호출하여 단계별로 각 과정을 수행하는 실행 파일입니다.
+   - config 파일의 파일명을 입력으로 받아 해당 파일에 정의 된 데이터 및 모델을 기반으로 각 task를 수행합니다.
    
 5. **주의 사항**
-   - `core`의 각 task에서 호출하는 기능으로 구성 된 파일들은 class 사용을 지양하고 가급적 함수로 작성합니다.
+   - `/core`의 각 task에서 호출하는 기능으로 구성 된 파일들은 class 사용을 지양하고 가급적 함수로 작성합니다.
    - 상기 함수들의 경우 동일한 함수명이 중복되지 않게 주의합니다.
