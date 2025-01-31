@@ -7,7 +7,7 @@
 
 ## Workflow
 
-<img src="imgs/architecture.jpg" alt='아키텍처' witdh="80%">
+<img src="imgs/architecture.jpg" alt='아키텍처' witdh="100%">
 
 1. **Data Workflow**
    - Upbit API를 호출하고 전처리를 수행하는 workflow 입니다.
